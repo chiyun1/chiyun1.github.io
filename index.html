@@ -238,6 +238,188 @@
   
   
   <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">
+                
+                <a class="post-title-link" href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/" itemprop="url">Time Profiler使用Tips</a></h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-10T19:29:47+08:00">
+                2020-07-10
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">开发技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        
+          
+            <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>按照固定的时间间隔，定时对线程中的调用堆栈进行采样，获取一个sample. 之后统计在这一时段内，某个方法出现在sample中次数。以此来表示该函数的运行情况</p>
+<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200710193248.png" alt=""></p>
+<p>所以<code>Long Running</code>和<code>Repeatitive and Fast running</code>. 他们很可能被采样同样多的次数。</p>
+<h2 id="面板概念"><a href="#面板概念" class="headerlink" title="面板概念"></a>面板概念</h2><h3 id="Weight"><a href="#Weight" class="headerlink" title="Weight"></a>Weight</h3><p><strong>Doesn’t measure duration. Aggregates samples into a useful summary.</strong></p>
+<p>weight的前面可以看到也有ms的时间。但是weight不代表duration. 这是 采样次数*采样间隔。采样间隔通常是1ms</p>
+<p>所以更合理的观察方法是参考Weight的百分比值。</p>
+<h3 id="Self-Weight"><a href="#Self-Weight" class="headerlink" title="Self Weight"></a>Self Weight</h3><p>该函数在自己的函数体内花费的时间。有的函数A内部只是简单调用其他函数B。这时A的Weight虽然可能高，但是它的Self Weight几乎为0. 可以进一步观察其子函数B. Weight高并且Self weight也高的是真正耗时的函数。</p>
+<h3 id="Call-Tree"><a href="#Call-Tree" class="headerlink" title="Call Tree"></a>Call Tree</h3><p>点击下方Call Tree按钮，可以看到有一些勾选项</p>
+<ol>
+<li><p>Hide System Libraries。<br> 这个很有用，可以屏蔽掉系统的的调用。这部分通常不是关注的</p>
+</li>
+<li><p>Invert Call Tree<br> 堆栈默认是从上往下显示的。勾选这个后会反向显示，可以把耗时的子调用直接显示出来。</p>
+</li>
+<li><p>其他也有各自的功能</p>
+</li>
+</ol>
+<h3 id="图形显示区域"><a href="#图形显示区域" class="headerlink" title="图形显示区域"></a>图形显示区域</h3><ol>
+<li>可以拖动游标，选定只观察某一个时间范围内的采样数据。</li>
+<li>可以点击左侧MainThread栏，从而只观察发生在MainThread上的采样数据</li>
+<li>使用<code>option +</code> 和<code>option -</code>来 <code>zoom in</code> 和<code>zoom out</code></li>
+<li>堆栈显示面板，按住<code>option</code>点击箭头，可以把子调用树全部展现，不用一级一级点。</li>
+</ol>
+<h2 id="符号加载"><a href="#符号加载" class="headerlink" title="符号加载"></a>符号加载</h2><p>对检测到的我们项目自己的函数，Instrument有时显示的只是函数地址，这是因为app相关的符号文件没有加载进来。</p>
+<p>如果有app该版本的符号文件，可以 Menu -&gt; Files -&gt; Symbols。 分别选择app以及framework的符号文件。</p>
+<p>tips: <em>如果是debug模式的包，默认pod库编译的framework是没有符号的。如果需要，可以在Xcode的面板中选择 Pods -&gt; Project Pods -&gt; Build Settings -&gt; Build Options -&gt; Debug Information Format -&gt; DWARF with dSYM File</em></p>
+<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>WWDC中提到</p>
+<ol>
+<li>最好使用Release版本，这样可以使用编译器优化过的点，接近app真正的运行情况。</li>
+<li>用真机测试。</li>
+</ol>
+<p>实践中用release设置直接Profile时会报错。这是因为我们Release的证书设置，通常是用来打包的发布证书。我们可以在project setting里，将<code>Release</code>的<code>Provisioning File</code>改成调试版本。并且将<code>Code Signing Identify</code>中设置改成<code>iOS Developer</code>。之后就可以检测release版本的代码了。</p>
+
+          
+        
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+
+      
+
+      
+
+      
+      
+        <div class="post-eof"></div>
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+    
+      
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/01/wwdc-optimizing-app-startup-time/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -930,7 +1112,7 @@
               
                 <a href="/archives/">
               
-                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-count">4</span>
                   <span class="site-state-item-name">日志</span>
                 </a>
               </div>
