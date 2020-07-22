@@ -341,39 +341,18 @@
       
         
           
-            <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>按照固定的时间间隔，定时对线程中的调用堆栈进行采样，获取一个sample. 之后统计在这一时段内，某个方法出现在sample中次数。以此来表示该函数的运行情况</p>
-<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200710193248.png" alt=""></p>
-<p>所以<code>Long Running</code>和<code>Repeatitive and Fast running</code>. 他们很可能被采样同样多的次数。</p>
-<h2 id="面板概念"><a href="#面板概念" class="headerlink" title="面板概念"></a>面板概念</h2><h3 id="Weight"><a href="#Weight" class="headerlink" title="Weight"></a>Weight</h3><p><strong>Doesn’t measure duration. Aggregates samples into a useful summary.</strong></p>
-<p>weight的前面可以看到也有ms的时间。但是weight不代表duration. 这是 采样次数*采样间隔。采样间隔通常是1ms</p>
-<p>所以更合理的观察方法是参考Weight的百分比值。</p>
-<h3 id="Self-Weight"><a href="#Self-Weight" class="headerlink" title="Self Weight"></a>Self Weight</h3><p>该函数在自己的函数体内花费的时间。有的函数A内部只是简单调用其他函数B。这时A的Weight虽然可能高，但是它的Self Weight几乎为0. 可以进一步观察其子函数B. Weight高并且Self weight也高的是真正耗时的函数。</p>
-<h3 id="Call-Tree"><a href="#Call-Tree" class="headerlink" title="Call Tree"></a>Call Tree</h3><p>点击下方Call Tree按钮，可以看到有一些勾选项</p>
-<ol>
-<li><p>Hide System Libraries。<br> 这个很有用，可以屏蔽掉系统的的调用。这部分通常不是关注的</p>
-</li>
-<li><p>Invert Call Tree<br> 堆栈默认是从上往下显示的。勾选这个后会反向显示，可以把耗时的子调用直接显示出来。</p>
-</li>
-<li><p>其他也有各自的功能</p>
-</li>
-</ol>
-<h3 id="图形显示区域"><a href="#图形显示区域" class="headerlink" title="图形显示区域"></a>图形显示区域</h3><ol>
-<li>可以拖动游标，选定只观察某一个时间范围内的采样数据。</li>
-<li>可以点击左侧MainThread栏，从而只观察发生在MainThread上的采样数据</li>
-<li>使用<code>option +</code> 和<code>option -</code>来 <code>zoom in</code> 和<code>zoom out</code></li>
-<li>堆栈显示面板，按住<code>option</code>点击箭头，可以把子调用树全部展现，不用一级一级点。</li>
-</ol>
-<h2 id="符号加载"><a href="#符号加载" class="headerlink" title="符号加载"></a>符号加载</h2><p>对检测到的我们项目自己的函数，Instrument有时显示的只是函数地址，这是因为app相关的符号文件没有加载进来。</p>
-<p>如果有app该版本的符号文件，可以 Menu -&gt; Files -&gt; Symbols。 分别选择app以及framework的符号文件。</p>
-<p>tips: <em>如果是debug模式的包，默认pod库编译的framework是没有符号的。如果需要，可以在Xcode的面板中选择 Pods -&gt; Project Pods -&gt; Build Settings -&gt; Build Options -&gt; Debug Information Format -&gt; DWARF with dSYM File</em></p>
-<h2 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h2><p>WWDC中提到</p>
-<ol>
-<li>最好使用Release版本，这样可以使用编译器优化过的点，接近app真正的运行情况。</li>
-<li>用真机测试。</li>
-</ol>
-<p>实践中用release设置直接Profile时会报错。这是因为我们Release的证书设置，通常是用来打包的发布证书。我们可以在project setting里，将<code>Release</code>的<code>Provisioning File</code>改成调试版本。并且将<code>Code Signing Identify</code>中设置改成<code>iOS Developer</code>。之后就可以检测release版本的代码了。</p>
+          原理按照固定的时间间隔，定时对线程中的调用堆栈进行采样，获取一个sample. 之后统计在这一时段内，某个方法出现在sample中次数。以此来表示该函数的运行情况
 
-          
+所以Long Running和Repeatitive and Fast running. 他们很可能被采样同样多的次数。
+面板概念We
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -523,159 +502,22 @@
       
         
           
-            <h2 id="App-build-step"><a href="#App-build-step" class="headerlink" title="App build step"></a>App build step</h2><ol>
-<li>预处理，将宏替换，生成ASCIi中间文件</li>
-<li>运行编译器，将中间文件生成汇编中间文件</li>
-<li>运行汇编器，将汇编文件翻译生成目标文件 .o</li>
-<li>运行链接器，将目标文件组合成一个可执行文件</li>
-</ol>
-<h2 id="Mach-O-Terminology"><a href="#Mach-O-Terminology" class="headerlink" title="Mach-O Terminology"></a>Mach-O Terminology</h2><h4 id="File-Types"><a href="#File-Types" class="headerlink" title="File Types:"></a>File Types:</h4><ul>
-<li>Executable – Main binary for application</li>
-<li>Dylib – Dynamic library (.dylib, .dll, .so)</li>
-<li>bundle – Dylib that cannot be linked, only <code>dlopen()</code>, e.g. plug-ins</li>
-</ul>
-<p>Image – An executable, dylib or Bundle</p>
-<p>Framework – Dylib with directories for resources and headers</p>
-<h4 id="Segments"><a href="#Segments" class="headerlink" title="Segments"></a>Segments</h4><p>File divided into segments:<br><code>__TEXT</code>, <code>__DATA</code>, <code>__LINEEDIT</code></p>
-<p>All segments are multiples of page size. 16KB on arm64, 4KB else where.</p>
-<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103232.png" alt=""></p>
-<p>Sections are a subrange of a segment</p>
-<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103431.png" alt=""></p>
-<p>Common segments:</p>
-<ul>
-<li><code>__TEXT</code> has header, code, and read-only constants(c strings)</li>
-<li><code>__DATA</code> has all read-write content: globals, static variables, etc.</li>
-<li><code>__LINKEDIT</code> has <code>meta data</code> about how to load the program.</li>
-</ul>
-<h4 id="Mach-O-Universal-Files"><a href="#Mach-O-Universal-Files" class="headerlink" title="Mach-O Universal Files"></a>Mach-O Universal Files</h4><p>Fat Header</p>
-<ul>
-<li>One Page in size</li>
-<li>Lists architectures and offsets</li>
-</ul>
-<p>Tools and runtime support fat march-O files</p>
-<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103500.png" alt=""></p>
-<h4 id="Mach-O-Image-Loading"><a href="#Mach-O-Image-Loading" class="headerlink" title="Mach-O Image Loading"></a>Mach-O Image Loading</h4><h2 id="From-exec-to-main"><a href="#From-exec-to-main" class="headerlink" title="From exec() to main()"></a>From <code>exec()</code> to <code>main()</code></h2><h4 id="exec"><a href="#exec" class="headerlink" title="exec()"></a>exec()</h4><p>It’s a system call. Kernel maps maps your application into new address space.<br>Start of your app is random.</p>
-<p>Low memory is marked inaccessible</p>
-<ul>
-<li>4KB+ for 32bit process</li>
-<li>4GB+ for 64-bit process</li>
-<li>Catches NULL pointer usage</li>
-<li>Catches pointer truncation errors.<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103557.png" alt=""></li>
-</ul>
-<h4 id="What-about-Dylibs"><a href="#What-about-Dylibs" class="headerlink" title="What about Dylibs"></a>What about Dylibs</h4><p>Kernel loads helper program.</p>
-<ul>
-<li>Dyld (dynamic loader)</li>
-<li>Executions starts in <code>dyld</code><br>Dyld runs in-process</li>
-<li>Loads dependent dylibs</li>
-<li>Has same permissions as app<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103619.png" alt=""></li>
-</ul>
-<h4 id="Dyld-Steps"><a href="#Dyld-Steps" class="headerlink" title="Dyld Steps"></a>Dyld Steps</h4><ul>
-<li>Map all dylibs, recurse</li>
-<li>Rebase all Images</li>
-<li>Bind all Images</li>
-<li>ObjC prepare images</li>
-<li>Run initializers</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103641.png" alt=""></p>
-<h4 id="Loading-Dylibs"><a href="#Loading-Dylibs" class="headerlink" title="Loading Dylibs"></a>Loading Dylibs</h4><ol>
-<li>parse list of depentdent dylibs. (they are listed in the executable file header)</li>
-<li>find requested mach-o file</li>
-<li>open and read start of file</li>
-<li>validate mach-o</li>
-<li>register code signature (<code>Code signatur</code> means instructions can not be altered)</li>
-<li>call <code>mmap()</code> for each segment</li>
-</ol>
-<p><strong>Recursive Loading</strong></p>
-<ul>
-<li>All your indepedent dylibs are loaded.</li>
-<li>Plus any dylib’s needed by those dylibs</li>
-<li>Rinse and repeat</li>
-</ul>
-<p>Apps typically load 100 to 400 dylibs!</p>
-<ul>
-<li>Most are OS dylibs (they are always pre-cashed, and loaded very quickly)</li>
-</ul>
-<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200702103707.png" alt=""></p>
-<h4 id="Rebase-and-Bindings"><a href="#Rebase-and-Bindings" class="headerlink" title="Rebase and Bindings"></a>Rebase and Bindings</h4><p><strong>Rebase</strong> : Ajusting pointers to within an image<br><strong>binding</strong>: Setting pointers to outside image</p>
-<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&#x2F;&#x2F;show rebase, bind information</span><br><span class="line">xcrun dyldinfo -rebase -bind -lazy_bind myapp.app&#x2F;myapp</span><br></pre></td></tr></table></figure>
-<p>大致理解是每个动态库中，指针地址的起始位置都是相对于内部基于0开始的，但是将库加载到App进程的内存空间后，整个库的指针起始位置是变了的。每个库都有自己的起始位置。所以有两个方面要调整：</p>
-<ol>
-<li>动态库内部的地址引用需要调整， rebase</li>
-<li>动态库之间的地址引用需要调整。binding</li>
-</ol>
-<p>显然是与库中类的大小，个数都是相关的</p>
-<h4 id="Notify-ObjC-Runtime"><a href="#Notify-ObjC-Runtime" class="headerlink" title="Notify ObjC Runtime"></a>Notify ObjC Runtime</h4><ul>
-<li>Most ObjC set up done via rebasing and binding</li>
-<li>All ObjC class definitions are registered</li>
-<li>Non-fragile ivars offsets updated</li>
-<li>Categories are inserted into method lists</li>
-<li>Selectors are uniqued</li>
-</ul>
-<h4 id="Initializers"><a href="#Initializers" class="headerlink" title="Initializers"></a>Initializers</h4><ul>
-<li>C++ generates initializers for statically allocated objects</li>
-<li>ObjC +load Method</li>
-<li>Run <code>bottom up</code> so each initializer can call dylibs below it </li>
-<li>Lastly, Dyld calls <code>main()</code> in executable</li>
-</ul>
-<h2 id="Improve-launch-time"><a href="#Improve-launch-time" class="headerlink" title="Improve launch time"></a>Improve launch time</h2><h4 id="Goals"><a href="#Goals" class="headerlink" title="Goals"></a>Goals</h4><ul>
-<li>Duration varies on devices.</li>
-<li>400ms is a good target</li>
-<li>don’t ever take longer than 20 seconds, or App will be killed by system</li>
-</ul>
-<p>Test on the lowest supported device</p>
-<h4 id="Launch-steps"><a href="#Launch-steps" class="headerlink" title="Launch steps"></a>Launch steps</h4><p>parse images -&gt; map images -&gt; rebase images -&gt; bind images -&gt; run image initializers -&gt; Call <code>main()</code> -&gt; Call <code>UIApplicationMain()</code> -&gt; Call <code>applicationWillFinishLaunching</code></p>
-<h4 id="warm-vs-cold-launch"><a href="#warm-vs-cold-launch" class="headerlink" title="warm vs cold launch"></a>warm vs cold launch</h4><p><strong>warm launch</strong></p>
-<p>App and data are already in memory</p>
-<p><strong>cold launch</strong></p>
-<p>App is not in kernal buffer cache</p>
-<p>Warm and cold launch times will be different.<br>Cold launch times are important.<strong>Measure cold launch time by rebooting</strong>.</p>
-<h4 id="measure-pre-main"><a href="#measure-pre-main" class="headerlink" title="measure pre-main"></a>measure pre-main</h4><p>Measure before <code>main()</code> is difficult.<br>Dyld has built in mesurements</p>
-<ul>
-<li><code>DYLD_PRINT_STATISTICS</code> environment variable</li>
-<li>Debugger pauses every dylib load. Dyld subtracts out debugger time</li>
-</ul>
-<h4 id="Dylib-Loading"><a href="#Dylib-Loading" class="headerlink" title="Dylib Loading"></a>Dylib Loading</h4><p>Embedded dylibs are expensive</p>
-<p>Use fewer dylibs</p>
-<ul>
-<li>Merge existing dylibs</li>
-<li>Use static archives</li>
-<li><code>dlopen()</code> can cause issues, so it’s not recommended.</li>
-</ul>
-<h4 id="rebasing-binding"><a href="#rebasing-binding" class="headerlink" title="rebasing/binding"></a>rebasing/binding</h4><p>Reduce __DATA pointers</p>
-<p>Reduce Objective C metadata</p>
-<ul>
-<li>Classes, selectors, categories</li>
-</ul>
-<p>Reduce C++ virtual</p>
-<p>Use Swift structs</p>
-<p>Examine machine generated codes</p>
-<ul>
-<li>use offsets instead of pointers</li>
-<li>Mark readonly</li>
-</ul>
-<h4 id="ObjC-setup"><a href="#ObjC-setup" class="headerlink" title="ObjC setup"></a>ObjC setup</h4><ul>
-<li>Class registration</li>
-<li>Non-fragile ivars offsets updated</li>
-<li>Category registration</li>
-<li>Selector uniquing</li>
-</ul>
-<p>the same way as rebasing/binding.</p>
-<h4 id="Initializers-explicit"><a href="#Initializers-explicit" class="headerlink" title="Initializers -explicit"></a>Initializers -explicit</h4><p>ObjC <code>+load()</code> method</p>
-<ul>
-<li>Relplace with <code>+initialize</code><br>C/C++ <strong>attribute</strong>((constructor))</li>
-</ul>
-<p>Replace with call site initializers</p>
-<ul>
-<li><code>dispatch_once()</code></li>
-<li><code>pthread_once()</code></li>
-<li><code>std::once()</code></li>
-</ul>
-<h4 id="Initializers-implicit"><a href="#Initializers-implicit" class="headerlink" title="Initializers -implicit"></a>Initializers -implicit</h4><p>C++ statics with non-trivial constructors</p>
-<p>rewrite with  Swift…</p>
-<p><strong>Do not cal <code>dlopen()</code> in initializers</strong></p>
-<p><strong>Do not create thread in initializers</strong></p>
+          App build step
+预处理，将宏替换，生成ASCIi中间文件
+运行编译器，将中间文件生成汇编中间文件
+运行汇编器，将汇编文件翻译生成目标文件 .o
+运行链接器，将目标文件组合成一个可执行文件
 
-          
+Mach-O TerminologyFile Types:
+Executable – Main 
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/07/01/wwdc-optimizing-app-startup-time/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -825,85 +667,16 @@
       
         
           
-            <h2 id="Problem"><a href="#Problem" class="headerlink" title="Problem"></a>Problem</h2><p>公司的某台测试机启动时间变的非常的慢，甚至达到10秒左右。但是其他大部分手机都没有问题。所以对这个手机进行了一番调查，发现是openUDID这个常用的第三方库拖慢了启动时间，于是做了一些优化，并做个总结。</p>
-<h2 id="History"><a href="#History" class="headerlink" title="History"></a>History</h2><p>ios5之前，开发者可以直接访问 UDID(unique device identifier)。比较准确</p>
-<p>ios5系统，苹果禁止开发者获取UDID。各家公司开始自研相应的替代方案。所以出现了很几种方案。</p>
-<p>初衷：<code>Appsfire</code>为了统一碎片化的状况，研发openUDID。鼓励大家都集成SGOpenUDID，是得不同产品之间可以共享同一个唯一标示符。</p>
-<p>通过setPersistent来持久</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">[slotPB setPersistent:<span class="literal">YES</span>];</span><br></pre></td></tr></table></figure>
-
-
-<p>ios10之后，<code>setPersistent</code>被废弃</p>
-<p><code>pasteboardWithName</code>的说明：</p>
-<blockquote>
-<p>App pasteboards returned by this method are not persistent, existing only until the app quits. Starting in iOS 10, persistent named pasteboards are deprecated. Instead use a shared container, as described in the overview for the UIPasteboard class.</p>
-</blockquote>
-<h2 id="Research"><a href="#Research" class="headerlink" title="Research"></a>Research</h2><p>使用Instrument，对启动慢的设备进行检测，发现几个慢的方法中，都卡在了与openUDID的方法调用中。<br>主要是<code>pasteboardWithName</code>和<code>dataForPasteboardType</code>两个方法中。这个库使用比较普遍，且启动时的模块是在主线程进行，所以减慢了启动速度。</p>
-<p>在代码中对两个方法进行<code>swizzling</code>，之后在系统方法前后统计时长以及调用次数。得出类似以下输出</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIPasteboard</span> pasteboardWithName duration <span class="number">1.709938</span> name:org.TTTrackerOpenUDID.slot<span class="number">.84</span></span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line"><span class="built_in">UIPasteboard</span> dataForPasteboardType duration <span class="number">15.424090</span> name:org.OpenUDID.slot<span class="number">.42</span> type:org.OpenUDID</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
-
-
-<p>duration单位ms. dataForPasteboardType的耗时更长。而统计调用次数可以发现，在启动缓慢的设备上该方法调用达到<code>**500多次**</code>， 而启动正常的总调用次数不到100次。</p>
-<p>调用次数非常多，查看openUDID的代码，发现有循环操作：</p>
-<figure class="highlight objc"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">for</span> (<span class="keyword">int</span> n=<span class="number">0</span>; n&lt;kOpenUDIDRedundancySlots; n++) &#123;</span><br><span class="line">        <span class="built_in">NSString</span>* slotPBid = [<span class="built_in">NSString</span> stringWithFormat:<span class="string">@"%@%d"</span>,kOpenUDIDSlotPBPrefix,n];</span><br><span class="line"><span class="meta">#<span class="meta-keyword">if</span> TARGET_OS_IPHONE || TARGET_IPHONE_SIMULATOR</span></span><br><span class="line">        <span class="built_in">UIPasteboard</span>* slotPB = [<span class="built_in">UIPasteboard</span> pasteboardWithName:slotPBid create:<span class="literal">NO</span>];</span><br><span class="line"><span class="meta">#<span class="meta-keyword">else</span></span></span><br><span class="line">        <span class="built_in">NSPasteboard</span>* slotPB = [<span class="built_in">NSPasteboard</span> pasteboardWithName:slotPBid];</span><br><span class="line"><span class="meta">#<span class="meta-keyword">endif</span></span></span><br><span class="line">        OpenUDIDLog(<span class="string">@"SlotPB name = %@"</span>,slotPBid);</span><br><span class="line">        <span class="keyword">if</span> (slotPB==<span class="literal">nil</span>) &#123;</span><br><span class="line">            <span class="comment">// assign availableSlotPBid to be the first one available</span></span><br><span class="line">            <span class="keyword">if</span> (availableSlotPBid==<span class="literal">nil</span>) availableSlotPBid = slotPBid;</span><br><span class="line">        &#125; <span class="keyword">else</span> &#123;</span><br><span class="line">            <span class="built_in">NSDictionary</span>* dict = [SGOpenUDID _getDictFromPasteboard:slotPB];</span><br></pre></td></tr></table></figure>
-
-
-<p>其中<code>kOpenUDIDRedundancySlots</code>的数值是<code>100</code></p>
-<p>设计思路：</p>
-<ol>
-<li>先从UserDefault尝试读取出UDID, AppID。</li>
-<li>每个app安装后，创建自己的AppID, 通过固定命名规则，并寻找一个没有被占用的slot，叫做<code>availableSlotPBid</code></li>
-<li>如果slot已经被占用，读取该slot粘贴板上存储的AppID，以及存储的UDID</li>
-<li>如果有相同AppID的slot，将这个slot叫做<code>myRedundancySlotPBid</code>。如果有哪个slot上没有存储uuid,这个slotye 可以复用赋值给<code>availableSlotPBid</code>。</li>
-<li>统计已有的每个UDID被使用个数，使用个数最多的，叫做<code>mostReliableUDID</code></li>
-<li>遍历结束后，如果UserDefault里取出的UDID是空的，就使用<code>mostReliableUDID</code>。这个也没有就创建新的。之后存到UserDefault里。</li>
-<li>如果有可用的<code>availableSlotPBid</code>, 且不存在相同AppID的slot，则将选的uuid数据也存储到<code>availableSlotPBid</code>粘贴板上</li>
-</ol>
-<p>通过Demo验证，最新的iOS12系统上，</p>
-<ol>
-<li>通过<code>pasteboardWithName</code>创建的粘贴板, app退出重新启动后，创建的粘贴板还在，并且同一Team里的粘贴板也可以共享。 但是不同Team之间不能共享。</li>
-<li>调用<code>setPersistent</code>对结果无影响，即使设置页不能再不同Team间共享。</li>
-<li><code>removePasteboardWithName</code>是有效的，可以删除Team内的粘贴板。team外的没有影响</li>
-</ol>
-<p>从Api的官方描述看，这一变化是从iOS10开是的。</p>
-<h2 id="Why"><a href="#Why" class="headerlink" title="Why"></a>Why</h2><ol>
-<li>随着测试的不断重装，每次卸载重装都会占用一个slot，并保存数据。导致每次启动后需要读取数据的pasteboard越来 越多，越来越慢</li>
-<li>项目App中的openUDID, 只改了类名，slotKey还是原来库里的<code>OpenUDID_slot</code>。后果是如果有其他app也用了openUDID,而且也没有修改slotKey。其他app的安装也会增加已用粘贴板的数量。装的app阅读，启动越慢。</li>
-</ol>
-<h2 id="Case"><a href="#Case" class="headerlink" title="Case"></a>Case</h2><ol>
-<li>自己App重新启动100次会怎样。<br>占满了100个slot之后，会复用具有相同AppID的slot</li>
-<li>自己App重装100次后会怎么处理？<br>UserDefault被删除，所以每次启动新建一个AppID。然后获取<code>mostReliableUDID</code>，保存到userDefault. 100次之后后去不到可用slot，所以每次只会保存到UserDefault</li>
-<li>自己的App新装时，发现100个slot都被其他公司app占用了怎么处理？<br>这种情况和自己重装是表现是一样的。</li>
-</ol>
-<h2 id="Solution"><a href="#Solution" class="headerlink" title="Solution"></a>Solution</h2><p>目标：</p>
-<ol>
-<li>保留UserDefault中的UDID</li>
-<li>是众多粘贴板中只有一个跟内存中数据一致，其他的释放掉。</li>
-</ol>
-<p>不会影响现有的UDID获取。也不影响<code>mostAlibableUDID</code>的获取。缺陷是其他某App打开后，不论升级还是新装，都有<code>availableSlot</code>可以用来保存</p>
-<p>步骤：</p>
-<ol>
-<li><del>修改slotKey.</del><br><del>在升级不会改变原 openUDID获取值的情况下，尝试修改slotKey。保证只有自己的app重装才会自我影响，降低几率</del></li>
-<li>获取粘贴板数据时，记录每个不同的UDID所在的第一个粘贴板slotName</li>
-<li>增加一个阈值判断，当前使用的UDID，所使用的slot占用一定数目之后进行进行清理。</li>
-<li>开始清理时，从Userdefault中读取使用的UDID, 之后查找其所在的第一个slotName.  找到后保留该slot，删除其他同UDID的粘贴板。</li>
-<li>搜集项目中openUDID的不同SlotKey组，针对每组做一次冗余清理。<br>目前发现的<code>OpenUDID</code>, <code>TTTrackerOpenUDID</code>, <code>KATrackerOpenUDID</code>, <code>BUOpenUDID</code></li>
-</ol>
-<p>对不同的UDID暂不处理，可能会影响其他同Team的App，虽然这种情况很少，代码中叫做<code>isCompromised</code></p>
-<h2 id="Test"><a href="#Test" class="headerlink" title="Test"></a>Test</h2><ol>
-<li>升级优化后，app自身的udid不会变</li>
-<li>其他sdk的udid也不会变</li>
-</ol>
-<h2 id="Risk"><a href="#Risk" class="headerlink" title="Risk"></a>Risk</h2><ol>
-<li>粘贴板的名称是Team空间的。如果公司其他App也使用的是未改过名的openUDID, 那其他app所用到的粘贴板也会被清除。如果这个app只修改的关键常量，没有改逻辑，那么对该App其实也是有加速启动的效果。但如果该app修改了逻辑实现，那影响结果就不可预期了</li>
-<li>同理，如果第三方sdk只修改了关键常量，那么是有加速效果，但如果第三方sdk中修改了实现逻辑，那结果也是不可预期。</li>
-</ol>
-<h2 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h2><p><a href="https://techcrunch.com/2011/09/01/appsfire-announces-open-source-udid-replacement-for-ios-openudid/" target="_blank" rel="noopener">https://techcrunch.com/2011/09/01/appsfire-announces-open-source-udid-replacement-for-ios-openudid/</a></p>
-
-          
+          Problem公司的某台测试机启动时间变的非常的慢，甚至达到10秒左右。但是其他大部分手机都没有问题。所以对这个手机进行了一番调查，发现是openUDID这个常用的第三方库拖慢了启动时间，于是做了一些优化，并做个总结。
+Historyios5之前，开发者可以直接访问 UDID(unique devi
+          ...
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/30/openUDID%E8%80%97%E6%97%B6%E8%B0%83%E7%A0%94/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
@@ -1031,8 +804,15 @@
       
         
           
-            
           
+          
+          <!--noindex-->
+          <div class="post-button text-center">
+            <a class="btn" href="/2020/06/29/test-my-site/#more" rel="contents">
+              阅读全文 &raquo;
+            </a>
+          </div>
+          <!--/noindex-->
         
       
     </div>
