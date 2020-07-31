@@ -1,0 +1,812 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="qSgLYpPb2QZejzl75yENa3JN0YSGDE4o8PolHoKnhQE" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="Flutter," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="简单集成flutter到已有项目创建Flutter Moduleflutter的集成可以是创建一个 新的flutter app 的方式，也可以是以创建一个module的方式，集成到一个已有的App中。一般项目都会通过第二种方式，来逐步进行Native和Flutter代码的混编。这里也主要是采用第二种方式，来一步步演示集成步骤。 这种集成方式要求flutter侧的代码是通过module的方式来创建，">
+<meta property="og:type" content="article">
+<meta property="og:title" content="一步步通过flutter_boost来集成Flutter到iOS项目">
+<meta property="og:url" content="http://yoursite.com/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/index.html">
+<meta property="og:site_name" content="Kevinlma的博客">
+<meta property="og:description" content="简单集成flutter到已有项目创建Flutter Moduleflutter的集成可以是创建一个 新的flutter app 的方式，也可以是以创建一个module的方式，集成到一个已有的App中。一般项目都会通过第二种方式，来逐步进行Native和Flutter代码的混编。这里也主要是采用第二种方式，来一步步演示集成步骤。 这种集成方式要求flutter侧的代码是通过module的方式来创建，">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596077017999-d0125e2b-fa76-4405-a2b5-e65e51f53213.png#align=left&display=inline&height=188&margin=%5Bobject%20Object%5D&name=&originHeight=188&originWidth=518&size=0&status=done&style=none&width=518">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/Kapture%202020-07-30%20at%2011.32.31.gif">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596091582398-1d557fb6-eba6-4ca0-a2c5-d80cea40840c.png#align=left&display=inline&height=473&margin=%5Bobject%20Object%5D&name=&originHeight=1892&originWidth=900&size=0&status=done&style=none&width=225">
+<meta property="article:published_time" content="2020-07-31T02:30:19.000Z">
+<meta property="article:modified_time" content="2020-07-31T03:59:53.402Z">
+<meta property="article:author" content="Kevinlma">
+<meta property="article:tag" content="Flutter">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596077017999-d0125e2b-fa76-4405-a2b5-e65e51f53213.png#align=left&display=inline&height=188&margin=%5Bobject%20Object%5D&name=&originHeight=188&originWidth=518&size=0&status=done&style=none&width=518">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/"/>
+
+
+
+
+
+  <title>一步步通过flutter_boost来集成Flutter到iOS项目 | Kevinlma的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kevinlma的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物来顺应，未来不迎，当时不杂，既过不恋</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">一步步通过flutter_boost来集成Flutter到iOS项目</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-31T10:30:19+08:00">
+                2020-07-31
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">开发技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h3 id=""><a href="#" class="headerlink" title=""></a></h3><h2 id="简单集成flutter到已有项目"><a href="#简单集成flutter到已有项目" class="headerlink" title="简单集成flutter到已有项目"></a>简单集成flutter到已有项目</h2><h3 id="创建Flutter-Module"><a href="#创建Flutter-Module" class="headerlink" title="创建Flutter Module"></a>创建Flutter Module</h3><p>flutter的集成可以是创建一个 新的<code>flutter app</code> 的方式，也可以是以创建一个module的方式，集成到一个已有的App中。一般项目都会通过第二种方式，来逐步进行Native和Flutter代码的混编。这里也主要是采用第二种方式，来一步步演示集成步骤。</p>
+<p>这种集成方式要求flutter侧的代码是通过module的方式来创建，所以先创建一个示例的module。运行下面创建代码</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">~/Desktop/demo                                                                                                                                                                                                                                                                                                       ⍉</span><br><span class="line">▶ flutter create -t  module -i objc flutter_module</span><br></pre></td></tr></table></figure>
+<p>之后会生成一个flutter_module的文件夹，里面就是我们要集成的flutter module。创建好之后, 模板已经生成了一个最简单的界面。我们先把这个module放到一边，先到App中尝试把它集成进来。</p>
+<h3 id="Native端集成Flutter-module"><a href="#Native端集成Flutter-module" class="headerlink" title="Native端集成Flutter module"></a>Native端集成Flutter module</h3><h4 id="创建iOS项目Demo工程"><a href="#创建iOS项目Demo工程" class="headerlink" title="创建iOS项目Demo工程"></a>创建iOS项目Demo工程</h4><p>这里我们先预先创建了一个单视图的iOS Demo项目。谷歌推荐使用cocoapod来集成flutter模块。由于Demo工程如果还没有Podfile，就需要先创建一个Podfile。注意要开启<code>use_frameworks!</code></p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br></pre></td><td class="code"><pre><span class="line">source <span class="string">'https://github.com/CocoaPods/Specs.git'</span></span><br><span class="line">platform <span class="symbol">:ios</span>,<span class="string">'8.0'</span></span><br><span class="line">use_frameworks!</span><br><span class="line"></span><br><span class="line">target <span class="string">'demoApp'</span> <span class="keyword">do</span></span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+<p>之后执行<code>pod install</code>，生成项目的workspace。</p>
+<h4 id="Podfile中加入对flutter-module的依赖"><a href="#Podfile中加入对flutter-module的依赖" class="headerlink" title="Podfile中加入对flutter module的依赖"></a>Podfile中加入对flutter module的依赖</h4><p>往已有的App中集成flutter module时又有两种方式，一种是通过源码的方式集成，这种要求开发者机器上装有flutter开发环境。另一种是把flutter模块的代码打包成framework，然后添加到目的app中。为了方便演示，这里采用第一种。</p>
+<p>首先往Podfile里增加导入flutter的代码，加之后Podfile是这个样子。</p>
+<figure class="highlight ruby"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br></pre></td><td class="code"><pre><span class="line">source <span class="string">'https://github.com/CocoaPods/Specs.git'</span></span><br><span class="line">platform <span class="symbol">:ios</span>,<span class="string">'8.0'</span></span><br><span class="line"></span><br><span class="line"><span class="comment">#这里添加如下代码，加载flutter模板中提供的ruby代码。注意路径改成自己建的flutter_module</span></span><br><span class="line">flutter_application_path = <span class="string">'../flutter_module'</span></span><br><span class="line">load File.join(flutter_application_path, <span class="string">'.ios'</span>, <span class="string">'Flutter'</span>, <span class="string">'podhelper.rb'</span>)</span><br><span class="line"></span><br><span class="line">target <span class="string">'demoApp'</span> <span class="keyword">do</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">#target里增加这句调用，模板提供的方法，把flutter相关导入到已有的App项目中</span></span><br><span class="line">  install_all_flutter_pods(flutter_application_path)</span><br><span class="line"><span class="keyword">end</span></span><br></pre></td></tr></table></figure>
+
+
+<p>加完后重新执行一次<code>pod install</code>，之后就可以看到项目的Pod工程里多了Development Pods.<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596077017999-d0125e2b-fa76-4405-a2b5-e65e51f53213.png#align=left&display=inline&height=188&margin=%5Bobject%20Object%5D&name=&originHeight=188&originWidth=518&size=0&status=done&style=none&width=518" alt=""><br>其中，Flutter是引擎相关代码，flutter_module是业务相关dart，我们开发的dart代码就被编译在这个framework里。FlutterPluginRegistrant是注册flutter插件用的。</p>
+<h4 id="Native项目代码里使用Flutter-module"><a href="#Native项目代码里使用Flutter-module" class="headerlink" title="Native项目代码里使用Flutter module"></a>Native项目代码里使用Flutter module</h4><p>首先需要创建Flutter Engine。方便起见，我们直接在AppDelegate.h中声明</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;UIKit/UIKit.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="comment">//加入flutter framework的依赖</span></span><br><span class="line"><span class="keyword">@import</span> Flutter;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">AppDelegate</span> : <span class="title">UIResponder</span> &lt;<span class="title">UIApplicationDelegate</span>&gt;</span></span><br><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) FlutterEngine* flutterEngine; <span class="comment">//声明一个flutter引擎的变量</span></span><br><span class="line"></span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<p>在App启动后，及时初始化一下Flutter引擎。当然也可以在后续要用到Flutter界面的时候才初始化，但那可能会造成Flutter界面展现时的一点卡顿，所以可以尽早初始化。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="built_in">BOOL</span>)application:(<span class="built_in">UIApplication</span> *)application didFinishLaunchingWithOptions:(<span class="built_in">NSDictionary</span> *)launchOptions &#123;</span><br><span class="line">    </span><br><span class="line"> 	<span class="comment">//初始化Flutter引擎，并运行。   </span></span><br><span class="line">    <span class="keyword">self</span>.flutterEngine = [[FlutterEngine alloc] initWithName:<span class="string">@"demo"</span>];</span><br><span class="line">    [<span class="keyword">self</span>.flutterEngine run];</span><br><span class="line">    </span><br><span class="line">    <span class="keyword">return</span> <span class="literal">YES</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+
+<p>准备好引擎之后，我们就已经可以在需要的地方展现Flutter模块界面了。Flutter的界面都是通过framework中提供的<code>FlutterViewController</code>来加载的。 下面通过在一个vc中加入一些测试代码，来展现刚才模板中创建的flutter界面。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)viewDidLoad &#123;</span><br><span class="line">    [<span class="keyword">super</span> viewDidLoad];</span><br><span class="line"></span><br><span class="line">    <span class="comment">// 点击后展现Flutter界面</span></span><br><span class="line">    <span class="built_in">UITapGestureRecognizer</span>* tap = [[<span class="built_in">UITapGestureRecognizer</span> alloc] initWithTarget:<span class="keyword">self</span> action:<span class="keyword">@selector</span>(onTap)];</span><br><span class="line">    [<span class="keyword">self</span>.view addGestureRecognizer:tap];</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">- (<span class="keyword">void</span>)onTap</span><br><span class="line">&#123;</span><br><span class="line">	<span class="comment">//获取刚才创建的flutter引擎。</span></span><br><span class="line">    FlutterEngine* engine = [(AppDelegate*)[<span class="built_in">UIApplication</span> sharedApplication].delegate flutterEngine];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//创建一个FlutterViewController，传入flutter引擎。</span></span><br><span class="line">    FlutterViewController* vc = [[FlutterViewController alloc] initWithEngine:engine nibName:<span class="literal">nil</span> bundle:<span class="literal">nil</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//展现flutter</span></span><br><span class="line">    [<span class="keyword">self</span>.navigationController pushViewController:vc animated:<span class="literal">YES</span>];</span><br><span class="line">    </span><br><span class="line">    <span class="comment">//隐藏默认的导航栏。因为flutter中界面是全屏显示的</span></span><br><span class="line">    [<span class="keyword">self</span>.navigationController setNavigationBarHidden:<span class="literal">YES</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>顺利的话，点击一下vc，就可以看到Flutter module中的界面展现出来了。<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/Kapture%202020-07-30%20at%2011.32.31.gif" width="50%" height="50%" alt="img"></p>
+<h2 id="使用flutter-boost来混合开发"><a href="#使用flutter-boost来混合开发" class="headerlink" title="使用flutter_boost来混合开发"></a>使用flutter_boost来混合开发</h2><p>目前展现的是模板生成的主界面，但项目中的混编应用会远比这复杂，可能会有多个flutter界面，并且跟Native交互也更复杂。通过Boost插件来更好的实现原生和Flutter的混合开发，这里做个简单例子。</p>
+<h3 id="flutter-module部分"><a href="#flutter-module部分" class="headerlink" title="flutter_module部分"></a>flutter_module部分</h3><h4 id="创建子页面"><a href="#创建子页面" class="headerlink" title="创建子页面"></a>创建子页面</h4><p>先打开刚才创建的flutter_module，准备一个要加载的子页面<br>业务开发的dart代码一般都放在lib文件下，先在lib目录下创建一个<code>subpage.dart</code>的文件，作为后续要加载的一个普通的子页面。简单创建一个 <code>SubPage.dart</code> </p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter/material.dart'</span>;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">SubPage</span> <span class="keyword">extends</span> <span class="title">StatelessWidget</span> </span>&#123;</span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> Scaffold(</span><br><span class="line">      appBar: AppBar(</span><br><span class="line">        title: Text(<span class="string">'SubPage'</span>),</span><br><span class="line">      ),</span><br><span class="line">      body: Container(</span><br><span class="line">        color: Colors.orange,</span><br><span class="line">        child: Center(</span><br><span class="line">          child: Text(<span class="string">'this is subpage'</span>),</span><br><span class="line">        ),</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<h4 id="增加flutter-boost第三方package"><a href="#增加flutter-boost第三方package" class="headerlink" title="增加flutter_boost第三方package"></a>增加flutter_boost第三方package</h4><p>打开module工程里的<code>pubspec.yaml</code>文件，flutter对第三方库的依赖是通过这个文件来管理的，类似于oc项目中的Podfile。我们在其中加入对flutter_boost的依赖</p>
+<figure class="highlight yaml"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line"><span class="attr">dependencies:</span></span><br><span class="line">  <span class="attr">flutter:</span></span><br><span class="line">    <span class="attr">sdk:</span> <span class="string">flutter</span></span><br><span class="line">  <span class="attr">cupertino_icons:</span> <span class="string">^0.1.2</span></span><br><span class="line">  </span><br><span class="line">  <span class="comment">#这行，版本的规则和cocoapod是基本一样的</span></span><br><span class="line">  <span class="attr">flutter_boost:</span> <span class="string">^1.12.13</span></span><br></pre></td></tr></table></figure>
+<p>之后在terminal中当前目录下执行<code>flutter pub get</code>命令行。用VSCode时，每次保存这个文件时这个命令也会自动触发。</p>
+<p>flutter_boost添加完成后，我们就可以设置对它子页面的路由管理。</p>
+<h4 id="module中使用flutter-boost"><a href="#module中使用flutter-boost" class="headerlink" title="module中使用flutter_boost"></a>module中使用flutter_boost</h4><p>打开<code>main.dart</code>，首先增加flutter_boost的dart导入</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">import</span> <span class="string">'package:flutter_boost/flutter_boost.dart'</span>;</span><br></pre></td></tr></table></figure>
+<p>然后把下面<code>_MyHomePageState</code>类的实现代码全部删掉，这些模板创建的代码已经用不到了，改成以下这样。关键是增加通过<code>FlutterBoost</code>来管理页面路由的代码</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">class</span> <span class="title">_MyHomePageState</span> <span class="keyword">extends</span> <span class="title">State</span>&lt;<span class="title">MyHomePage</span>&gt; </span>&#123;</span><br><span class="line"></span><br><span class="line">  <span class="meta">@override</span></span><br><span class="line">  Widget build(BuildContext context) &#123;</span><br><span class="line">    <span class="keyword">return</span> MaterialApp(</span><br><span class="line">      title: <span class="string">'Flutter Boost Example'</span>,</span><br><span class="line">      builder: FlutterBoost.init(), <span class="comment">//关键是这里</span></span><br><span class="line">      home: Container(</span><br><span class="line">        child: Text(<span class="string">'test'</span>),</span><br><span class="line">        color: Colors.white,</span><br><span class="line">      ),</span><br><span class="line">    );</span><br><span class="line">  &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>接下来再给FlutterBoost注册一下我们的子页面，这部分代码我们放在_MyHomePageState的<code>initState()</code>方法中去做。</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">void</span> initState() &#123;</span><br><span class="line">    <span class="keyword">super</span>.initState();</span><br><span class="line"></span><br><span class="line">  	<span class="comment">//建立一个路由名称:builder的map。别忘了在文件头部也加上 import 'subpage.dart'; 否则SubPage类不认识</span></span><br><span class="line">    <span class="keyword">final</span> route_builder = &#123;</span><br><span class="line">      <span class="string">'subpage'</span>: (<span class="built_in">String</span> name, <span class="built_in">Map</span>&lt;<span class="built_in">String</span>, <span class="built_in">dynamic</span>&gt; param, <span class="built_in">String</span> _) =&gt;</span><br><span class="line">          SubPage()</span><br><span class="line">    &#125;;</span><br><span class="line">  	<span class="comment">//向FlutterBoost注册路由,</span></span><br><span class="line">    FlutterBoost.singleton.registerPageBuilders(route_builder);</span><br><span class="line">  &#125;</span><br></pre></td></tr></table></figure>
+<p>做完这些后，flutter_module这部分就暂时完成了，接下来就可以去App中使用FlutterBoost接入了</p>
+<h3 id="Native端"><a href="#Native端" class="headerlink" title="Native端"></a>Native端</h3><h4 id="Native端也增加flutter-boost的依赖"><a href="#Native端也增加flutter-boost的依赖" class="headerlink" title="Native端也增加flutter_boost的依赖"></a>Native端也增加flutter_boost的依赖</h4><p>因为flutter端使用了flutter_boost插件，并且代码有了改动，所以在Terminal中重新执行一次<code>pod install</code>。可以看到Native这边也增加上了flutter_boost相关的pod库。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">Analyzing dependencies</span><br><span class="line">Downloading dependencies</span><br><span class="line">Installing FlutterPluginRegistrant 0.0.1</span><br><span class="line">Installing flutter_boost (0.0.2)</span><br><span class="line">...</span><br></pre></td></tr></table></figure>
+
+
+<p>Native端主要可以分成两个部分：flutter_boost的初始化，以及与flutter端的交互。<br>我们看看与flutter端的交互部分。</p>
+<h4 id="添加flutter-boost对路由跳转的平台实现"><a href="#添加flutter-boost对路由跳转的平台实现" class="headerlink" title="添加flutter_boost对路由跳转的平台实现"></a>添加flutter_boost对路由跳转的平台实现</h4><p>flutter_boost的实现机制，个人理解大致是每个flutter中的页面都通过Native这边的一个<code>FLBFlutterViewContainer</code>来承载。而<code>FLBFlutterViewContainer</code>都共享同一个FlutterEngine。<code>FLBFlutterViewContainer</code>的展现和消失，不论是Native端发起还是Flutter端发起，最后都是Native端来实现的。具体可以参考flutter_boost的介绍</p>
+<p>首先创建一个<code>FlutterPlatform</code>的类，实现<code>FLBPlatform</code>协议，来实现flutter端发起的跳转请求。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@import</span> flutter_boost;</span><br><span class="line"><span class="comment">//</span></span><br><span class="line"><span class="class"><span class="keyword">@interface</span> <span class="title">FlutterPlatform</span> : <span class="title">NSObject</span>&lt;<span class="title">FLBPlatform</span>&gt;</span></span><br><span class="line"><span class="keyword">@end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">@implementation</span> <span class="title">FlutterPlatform</span></span></span><br><span class="line"><span class="comment">//实现push的处理</span></span><br><span class="line">- (<span class="keyword">void</span>)open:(<span class="built_in">NSString</span> *)url</span><br><span class="line">   urlParams:(<span class="built_in">NSDictionary</span> *)urlParams</span><br><span class="line">        exts:(<span class="built_in">NSDictionary</span> *)exts</span><br><span class="line">      completion:(<span class="keyword">void</span> (^)(<span class="built_in">BOOL</span> finished))completion</span><br><span class="line">&#123;</span><br><span class="line">    FLBFlutterViewContainer* vc = [[FLBFlutterViewContainer alloc] init];</span><br><span class="line">    vc.name = url;</span><br><span class="line"></span><br><span class="line">	<span class="comment">//这里每个项目的处理都会不一样，这里只是举个例子</span></span><br><span class="line">	<span class="built_in">UIViewController</span>* rootViewController = [[<span class="built_in">UIApplication</span> sharedApplication].delegate.window rootViewController];</span><br><span class="line">    <span class="keyword">if</span> ([rootViewController isKindOfClass:[<span class="built_in">UINavigationController</span> <span class="keyword">class</span>]]) &#123;</span><br><span class="line">        [(<span class="built_in">UINavigationController</span>*)rootViewController pushViewController:vc animated:<span class="literal">YES</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="comment">//实现close的处理</span></span><br><span class="line">- (<span class="keyword">void</span>)close:(<span class="built_in">NSString</span> *)uid</span><br><span class="line">       result:(<span class="built_in">NSDictionary</span> *)result</span><br><span class="line">         exts:(<span class="built_in">NSDictionary</span> *)exts</span><br><span class="line">   completion:(<span class="keyword">void</span> (^)(<span class="built_in">BOOL</span> finished))completion</span><br><span class="line">&#123;</span><br><span class="line">    <span class="built_in">UIViewController</span>* vc = FlutterBoostPlugin.sharedInstance.currentViewController;</span><br><span class="line">    <span class="keyword">if</span> (vc.navigationController) &#123;</span><br><span class="line">        [vc.navigationController popViewControllerAnimated:<span class="literal">YES</span>];</span><br><span class="line">    &#125;<span class="keyword">else</span> <span class="keyword">if</span>(vc.presentingViewController)&#123;</span><br><span class="line">        [vc.presentingViewController dismissViewControllerAnimated:<span class="literal">YES</span> completion:<span class="literal">nil</span>];</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">@end</span></span><br></pre></td></tr></table></figure>
+<h4 id="初始化flutter-boost"><a href="#初始化flutter-boost" class="headerlink" title="初始化flutter_boost"></a>初始化flutter_boost</h4><p>对<code>FLBFlutterViewContainer</code>的协作处理类建立好之后，我们就可以去进行flutter_boost的初始化了。由于它会接管FlutterEngin的创建，所以我们之前的Engine初始化代码需要修改一下。回到AppDelegate类中，将之前的FlutterEngine初始化代码都删掉，换成flutter_boost提供的初始化方式.</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br></pre></td><td class="code"><pre><span class="line">FlutterPlatform* platform = [[FlutterPlatform alloc] init];</span><br><span class="line">[FlutterBoostPlugin.sharedInstance startFlutterWithPlatform:platform onStart:^(FlutterEngine * _Nonnull engine) &#123;</span><br><span class="line">    <span class="keyword">self</span>.flutterEngine = engine;</span><br><span class="line">&#125;];</span><br></pre></td></tr></table></figure>
+<h4 id="通过flutter-boost打开Flutter中的子页面"><a href="#通过flutter-boost打开Flutter中的子页面" class="headerlink" title="通过flutter_boost打开Flutter中的子页面"></a>通过flutter_boost打开Flutter中的子页面</h4><p>到这里，通过flutter_boost来接入flutter就已经基本完成了。我们可以来试着通过flutter_boost来打开我们刚才创建的subpage页面。还是在我们前面添加点击事件的地方，换成以flutter_boost的方式打开</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">void</span>)onTap</span><br><span class="line">&#123;</span><br><span class="line">    [FlutterBoostPlugin open:<span class="string">@"subpage"</span> urlParams:@&#123;&#125; exts:@&#123;&#125; onPageFinished:^(<span class="built_in">NSDictionary</span> * result) &#123;&#125; completion:^(<span class="built_in">BOOL</span> completion) &#123;&#125;];</span><br><span class="line">    </span><br><span class="line"><span class="comment">//    FlutterEngine* engine = [(AppDelegate*)[UIApplication sharedApplication].delegate flutterEngine];</span></span><br><span class="line"><span class="comment">//    FlutterViewController* vc = [[FlutterViewController alloc] initWithEngine:engine nibName:nil bundle:nil];</span></span><br><span class="line"><span class="comment">//    [self.navigationController pushViewController:vc animated:YES];</span></span><br><span class="line">    </span><br><span class="line">    [<span class="keyword">self</span>.navigationController setNavigationBarHidden:<span class="literal">YES</span>];</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>没意外的话，应该可以看到我们创建的子页面被展现出来了。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596091582398-1d557fb6-eba6-4ca0-a2c5-d80cea40840c.png#align=left&display=inline&height=473&margin=%5Bobject%20Object%5D&name=&originHeight=1892&originWidth=900&size=0&status=done&style=none&width=225" alt=""></p>
+<h4 id="Flutter中调用关闭当前子页面"><a href="#Flutter中调用关闭当前子页面" class="headerlink" title="Flutter中调用关闭当前子页面"></a>Flutter中调用关闭当前子页面</h4><p>但是目前展现，不能回退，返回去再修改一下dart代码，在界面上增加一个返回按钮。通过flutter_boost来退出该界面了。修改subpage的代码，在Appbar上增加一个返回按钮</p>
+<figure class="highlight dart"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">appBar: AppBar(</span><br><span class="line">      title: Text(<span class="string">'SubPage'</span>),</span><br><span class="line">      leading: IconButton(</span><br><span class="line">          icon: Icon(Icons.arrow_back_ios),</span><br><span class="line">          onPressed: () &#123;</span><br><span class="line">            FlutterBoost.singleton.closeByContext(context);</span><br><span class="line">          &#125;),</span><br><span class="line">    ),</span><br></pre></td></tr></table></figure>
+<p>顺利的话，点击新加的返回按钮，就可以正常退出了。</p>
+<h2 id="最后"><a href="#最后" class="headerlink" title="最后"></a>最后</h2><p>上面记录的是一个最基本的接入流程，方便自己后续学习。后面还有很多细节需要根据项目需要去调整，比如插件的注册，路由跳转的平台实现等等。</p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/Flutter/" rel="tag"># Flutter</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/22/remove_the_wall_in_your_thinking/" rel="next" title="《拆掉思维里的墙》">
+                <i class="fa fa-chevron-left"></i> 《拆掉思维里的墙》
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Kevinlma</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">3</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#"><span class="nav-number">1.</span> <span class="nav-text"></span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#简单集成flutter到已有项目"><span class="nav-number"></span> <span class="nav-text">简单集成flutter到已有项目</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#创建Flutter-Module"><span class="nav-number">1.</span> <span class="nav-text">创建Flutter Module</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Native端集成Flutter-module"><span class="nav-number">2.</span> <span class="nav-text">Native端集成Flutter module</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建iOS项目Demo工程"><span class="nav-number">2.1.</span> <span class="nav-text">创建iOS项目Demo工程</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Podfile中加入对flutter-module的依赖"><span class="nav-number">2.2.</span> <span class="nav-text">Podfile中加入对flutter module的依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Native项目代码里使用Flutter-module"><span class="nav-number">2.3.</span> <span class="nav-text">Native项目代码里使用Flutter module</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#使用flutter-boost来混合开发"><span class="nav-number"></span> <span class="nav-text">使用flutter_boost来混合开发</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#flutter-module部分"><span class="nav-number">1.</span> <span class="nav-text">flutter_module部分</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#创建子页面"><span class="nav-number">1.1.</span> <span class="nav-text">创建子页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#增加flutter-boost第三方package"><span class="nav-number">1.2.</span> <span class="nav-text">增加flutter_boost第三方package</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#module中使用flutter-boost"><span class="nav-number">1.3.</span> <span class="nav-text">module中使用flutter_boost</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Native端"><span class="nav-number">2.</span> <span class="nav-text">Native端</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#Native端也增加flutter-boost的依赖"><span class="nav-number">2.1.</span> <span class="nav-text">Native端也增加flutter_boost的依赖</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#添加flutter-boost对路由跳转的平台实现"><span class="nav-number">2.2.</span> <span class="nav-text">添加flutter_boost对路由跳转的平台实现</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#初始化flutter-boost"><span class="nav-number">2.3.</span> <span class="nav-text">初始化flutter_boost</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#通过flutter-boost打开Flutter中的子页面"><span class="nav-number">2.4.</span> <span class="nav-text">通过flutter_boost打开Flutter中的子页面</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#Flutter中调用关闭当前子页面"><span class="nav-number">2.5.</span> <span class="nav-text">Flutter中调用关闭当前子页面</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#最后"><span class="nav-number"></span> <span class="nav-text">最后</span></a></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
+        appKey: 'Pfz8y5QNzgWpslPcrKe12GjA',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
