@@ -1,0 +1,853 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="qSgLYpPb2QZejzl75yENa3JN0YSGDE4o8PolHoKnhQE" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="技术原理," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="基本概念涉及的算法 非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。 摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 根据哈希值无法反推出数据是什么 。  签名算法：发送方：  把原始数据计算hash 将hash使用私钥加密后获得加密后数据，叫做签名 将明文同签名一起发送给接收方。  接收方：  收到后使用">
+<meta property="og:type" content="article">
+<meta property="og:title" content="iOS程序证书和签名机制Tips">
+<meta property="og:url" content="http://yoursite.com/2020/08/03/certification_signing_machanism/index.html">
+<meta property="og:site_name" content="Kevinlma的博客">
+<meta property="og:description" content="基本概念涉及的算法 非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。 摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 根据哈希值无法反推出数据是什么 。  签名算法：发送方：  把原始数据计算hash 将hash使用私钥加密后获得加密后数据，叫做签名 将明文同签名一起发送给接收方。  接收方：  收到后使用">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=161&originWidth=531&size=14201&status=done&style=none&width=531">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439585696-b0e5e92e-7240-4dd1-abde-147dba6bb344.png#align=left&display=inline&height=361&margin=%5Bobject%20Object%5D&name=image.png&originHeight=361&originWidth=531&size=22862&status=done&style=none&width=531">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439713361-2d1ca37e-da81-43f5-a5d3-707e1338351e.png#align=left&display=inline&height=42&margin=%5Bobject%20Object%5D&name=image.png&originHeight=84&originWidth=2064&size=29628&status=done&style=none&width=1032">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447403262-240299c7-7a43-44fe-b9c1-77fc3af8b9f5.png#align=left&display=inline&height=564&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1128&originWidth=1432&size=221712&status=done&style=none&width=716">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447482518-ff31f928-1a75-4914-bbb3-91b3bfa4b23d.png#align=left&display=inline&height=91&margin=%5Bobject%20Object%5D&name=image.png&originHeight=182&originWidth=2852&size=235113&status=done&style=none&width=1426">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596443753419-cd5bbae2-ddb8-4de8-938e-d0a536ec3b39.png#align=left&display=inline&height=103&margin=%5Bobject%20Object%5D&name=image.png&originHeight=206&originWidth=294&size=27885&status=done&style=none&width=147">
+<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596444548763-0ff0e9ee-a33a-43bf-a32d-933aec5110f2.png#align=left&display=inline&height=60&margin=%5Bobject%20Object%5D&name=image.png&originHeight=120&originWidth=470&size=14194&status=done&style=none&width=235">
+<meta property="article:published_time" content="2020-08-03T11:29:47.000Z">
+<meta property="article:modified_time" content="2020-08-03T09:51:24.452Z">
+<meta property="article:author" content="Kevinlma">
+<meta property="article:tag" content="技术原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=161&originWidth=531&size=14201&status=done&style=none&width=531">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/08/03/certification_signing_machanism/"/>
+
+
+
+
+
+  <title>iOS程序证书和签名机制Tips | Kevinlma的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kevinlma的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物来顺应，未来不迎，当时不杂，既过不恋</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/certification_signing_machanism/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">iOS程序证书和签名机制Tips</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-03T19:29:47+08:00">
+                2020-08-03
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">开发技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/08/03/certification_signing_machanism/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/03/certification_signing_machanism/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h4 id="涉及的算法"><a href="#涉及的算法" class="headerlink" title="涉及的算法"></a>涉及的算法</h4><ol>
+<li>非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。</li>
+<li>摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 <code>根据哈希值无法反推出数据是什么</code> 。</li>
+</ol>
+<h4 id="签名算法："><a href="#签名算法：" class="headerlink" title="签名算法："></a>签名算法：</h4><p>发送方：</p>
+<ol>
+<li>把原始数据计算hash</li>
+<li>将hash使用私钥加密后获得加密后数据，叫做签名</li>
+<li>将明文同签名一起发送给接收方。</li>
+</ol>
+<p>接收方：</p>
+<ol>
+<li>收到后使用公钥解密签名，获得原始数据的hash值。</li>
+<li>自己对原始数据计算hash值。</li>
+<li>将计算得出的hash和解密后的hash进行比较，就可以知道明文是否被篡改过。</li>
+</ol>
+<p><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=161&originWidth=531&size=14201&status=done&style=none&width=531" alt="image.png"></p>
+<h4 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h4><p>接收方如果要接收多个来源的数据，就需要保存多个来源的公钥，管理非常不便。所以一般会把公钥也放在发送的数据中。但这样一来，对于收到的公私是否是真的，接收方就不能确定了。为了解决这个问题，一般会使用一个可信的第三方机构，通过第三方机构对用到的公钥也做一次签名。这个第三方机构叫做证书颁发机构（Certification Authority）,也就是CA。公钥及其相关签名信息整个放在一个文件里，叫做证书。</p>
+<p>接受者一般保存CA的公钥就可以，之后验证接收的公钥合法性，再验证接收的数据的合法性。CA有时候也会有多个，形成链条。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439585696-b0e5e92e-7240-4dd1-abde-147dba6bb344.png#align=left&display=inline&height=361&margin=%5Bobject%20Object%5D&name=image.png&originHeight=361&originWidth=531&size=22862&status=done&style=none&width=531" alt="image.png"></p>
+<h2 id="开发者证书"><a href="#开发者证书" class="headerlink" title="开发者证书"></a>开发者证书</h2><p>只有通过iOS系统的签名校验，才能安装到手机上。开发阶段需要频繁修改文件，安装测试等，不能每次都是请求Apple进行签名才能安装。所以需要一种开发者可以给自己签名的机制，同时又能保证安全。</p>
+<h4 id="申请创建"><a href="#申请创建" class="headerlink" title="申请创建"></a>申请创建</h4><p>一般是通过KeyChain里的证书助理，填写邮箱和名称后，创建一个.certSigningRequest文件，之后保存到磁盘上。这时在KeyChain里已经生成好了一对公钥和私钥。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439713361-2d1ca37e-da81-43f5-a5d3-707e1338351e.png#align=left&display=inline&height=42&margin=%5Bobject%20Object%5D&name=image.png&originHeight=84&originWidth=2064&size=29628&status=done&style=none&width=1032" alt="image.png"></p>
+<h4 id="提交Apple验证"><a href="#提交Apple验证" class="headerlink" title="提交Apple验证"></a>提交Apple验证</h4><p>之后我们会在Apple的网站上，上传这个request文件。Apple生成一个.cer证书文件，我们下载到本地后，双击安装，就可以在KeyChain里看到安装的证书。<br>查看安装的证书信息。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447403262-240299c7-7a43-44fe-b9c1-77fc3af8b9f5.png#align=left&display=inline&height=564&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1128&originWidth=1432&size=221712&status=done&style=none&width=716" alt="image.png"></p>
+<ol>
+<li>证书信息，App根据我们的账号生成</li>
+<li>颁发机构信息</li>
+<li>使用的的算法</li>
+<li>公钥信息</li>
+</ol>
+<p>现在开发者就具有私钥+证书。证书里包含了公钥以及苹果对公钥的签名。打包签名的过程中，就使用开发者的私钥对文件进行签名。我理解可以把开发者视为数据的发送方，Apple是第三方的证书颁发机构。CA是可以一级一级形成链条。设备上安装ipa时，系统通过Apple的签名确定公钥的合法性，最终确定安装包的合法性。</p>
+<h4 id="开发者证书-1"><a href="#开发者证书-1" class="headerlink" title="开发者证书"></a>开发者证书</h4><p>一般有Develop、adhoc、distribution、inhouse。不同证书运行原理是一样的，区别在Provisioning Profile文件中</p>
+<p>除了证书外，还要两个文件会被打进包里， <code>provisioning profile</code> 和 <code>entitlements</code> </p>
+<h4 id="entitlements"><a href="#entitlements" class="headerlink" title="entitlements"></a>entitlements</h4><p>这个文件与沙盒运行机制有关。iOS系统里每个App只能运行在自己的沙盒环境中，对资源的访问，只能限定在自己的沙盒中，比如磁盘文件的访问。并且对每个App使用权限做了严格的限制，只要是App用到的系统权限，必须在这个entitlements文件里做声明，否则运行时会直接Crash。</p>
+<h4 id="provisioning-profile"><a href="#provisioning-profile" class="headerlink" title="provisioning profile"></a>provisioning profile</h4><p>这个文件是我们再Apple的网站上生成的，在构建时会被打进安装包，并重命名为 <code>embedded.mobileprovision</code> 。这个文件起到了的作用是，将签名的证书，与开发者账号、运行的设备、以及使用的权限做一个绑定。（在Apple网站上我们创建这个文件时，需要选择cer证书、设备、entitlements）。</p>
+<p>这是一个处理过的plist文件，使用一些工具（比如python的PyMobileProvision库）就可以看到这个文件里至少包含以下信息：</p>
+<ol>
+<li><p>账号信息</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">'AppIDName': 'testapp',</span><br><span class="line">'ApplicationIdentifierPrefix': ['TeamID'],</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>证书</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">DeveloperCertificates': [Common Name: iPhone Distribution: xxxxx, SHA256: 9B766E84FC3C4FC587BBB433866110A82C6B59871214B84A07DA5321FAE315C2],</span><br></pre></td></tr></table></figure>
+
+
+</li>
+</ol>
+<ol start="2">
+<li><p>Entitlements列表</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br></pre></td><td class="code"><pre><span class="line">'Entitlements': &#123;'application-identifier': 'xxxx.com.test.testapp',</span><br><span class="line">                  'aps-environment': 'production',</span><br><span class="line">                  'com.apple.developer.applesignin': ['Default'],</span><br><span class="line">                  'com.apple.developer.associated-domains': '*',</span><br><span class="line">                  'com.apple.developer.team-identifier': '&#123;TeamID&#125;',</span><br><span class="line">                  'com.apple.security.application-groups': ['group.com.test.testapp.appgroup'],</span><br><span class="line">                  'get-task-allow': False,</span><br><span class="line">                  'keychain-access-groups': ['TeamID.*']&#125;,</span><br></pre></td></tr></table></figure>
+</li>
+<li><p>ProvisionedDevices。注册过的设备</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br></pre></td><td class="code"><pre><span class="line">'ProvisionedDevices': ['201f303409994384c1916d12e0a069fb86962ead',</span><br><span class="line">                        'b6f474870760ccffbec436cb8aceb8f80c814602',</span><br><span class="line">                        '00008006-0004929A36E2002E',</span><br><span class="line">                        '85b3d893b249672891ed360a02e179be6174dfa8',</span><br><span class="line">                       ...</span><br></pre></td></tr></table></figure>
+<p>企业版可以安装在任意的设备上，它的Provisioning profile里没有描述注册设备的字段，而是这样的</p>
+<figure class="highlight"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">'ProvisionsAllDevices': True,</span><br></pre></td></tr></table></figure>
+<h4 id="签名相关文件的处理"><a href="#签名相关文件的处理" class="headerlink" title="签名相关文件的处理"></a>签名相关文件的处理</h4><p>证书在构建时，会一起打进安装包里，会重命名为 <code>certificate.cer</code> 。provisitioning profile文件会被重命名为 <code>embedded.mobileprovision</code> 。</p>
+</li>
+</ol>
+<h2 id="构建时签名过程"><a href="#构建时签名过程" class="headerlink" title="构建时签名过程"></a>构建时签名过程</h2><p>每一次build中都会涉及签名过程，包括framework和主项目二进制。使用的证书是provisioning profile里配好的。比如<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447482518-ff31f928-1a75-4914-bbb3-91b3bfa4b23d.png#align=left&display=inline&height=91&margin=%5Bobject%20Object%5D&name=image.png&originHeight=182&originWidth=2852&size=235113&status=done&style=none&width=1426" alt="image.png"><br>在生成的安装包中， 还会生成一个文件夹<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596443753419-cd5bbae2-ddb8-4de8-938e-d0a536ec3b39.png#align=left&display=inline&height=103&margin=%5Bobject%20Object%5D&name=image.png&originHeight=206&originWidth=294&size=27885&status=done&style=none&width=147" alt="image.png"><br>里面是一个plist格式的文件，包含了所有资源文件的md5值。</p>
+<p>二进制制的签名信息会嵌入到二进制文件里，包括主项目和framework。二进制里会增加一个段<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596444548763-0ff0e9ee-a33a-43bf-a32d-933aec5110f2.png#align=left&display=inline&height=60&margin=%5Bobject%20Object%5D&name=image.png&originHeight=120&originWidth=470&size=14194&status=done&style=none&width=235" alt="image.png"></p>
+<h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>在App安装，启动，运行等不同阶段，系统会进行一些合法性校验。有了前面的各种铺垫，我们大概可以了解，系统从证书颁发机构的合法性校验开始（Root CA的公钥是内置在设备系统里的，所以证书校验链条最上层的公钥不需要提供），逐步验证证书的合法性、公钥的合法性，直到App包里文件的合法性。</p>
+<h2 id="关于商店包"><a href="#关于商店包" class="headerlink" title="关于商店包"></a>关于商店包</h2><p>关于商店包会有几个疑问：</p>
+<ol>
+<li>我们的证书都是有一年期限的，过期之后就不能使用，过期后不能安装用该证书签名的App。但是商店包没有这个影响。</li>
+<li>商店包里没有<code>embedded.mobileprovision和certificate.cer</code></li>
+</ol>
+<p>原因bang在他的博客里提到，是因为Apple在安装包上传之后，Apple用自己的私钥对安装包做了重签名。所以我们自己的证书，profile文件就没有用处了。同时也就没有证书有效期的限制了。</p>
+<h2 id="参考"><a href="#参考" class="headerlink" title="参考"></a>参考</h2><p>主要是参考了这篇博客，讲解的很深入<br><a href="http://xelz.info/blog/2019/01/11/ios-code-signature/" target="_blank" rel="noopener">http://xelz.info/blog/2019/01/11/ios-code-signature/</a><br><a href="http://blog.cnbang.net/tech/3386/" target="_blank" rel="noopener">http://blog.cnbang.net/tech/3386/</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/" rel="tag"># 技术原理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/" rel="next" title="一步步通过flutter_boost来集成Flutter到iOS项目">
+                <i class="fa fa-chevron-left"></i> 一步步通过flutter_boost来集成Flutter到iOS项目
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Kevinlma</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">6</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">4</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#基本概念"><span class="nav-number">1.</span> <span class="nav-text">基本概念</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#涉及的算法"><span class="nav-number">1.0.1.</span> <span class="nav-text">涉及的算法</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#签名算法："><span class="nav-number">1.0.2.</span> <span class="nav-text">签名算法：</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#证书"><span class="nav-number">1.0.3.</span> <span class="nav-text">证书</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#开发者证书"><span class="nav-number">2.</span> <span class="nav-text">开发者证书</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#申请创建"><span class="nav-number">2.0.1.</span> <span class="nav-text">申请创建</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#提交Apple验证"><span class="nav-number">2.0.2.</span> <span class="nav-text">提交Apple验证</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#开发者证书-1"><span class="nav-number">2.0.3.</span> <span class="nav-text">开发者证书</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#entitlements"><span class="nav-number">2.0.4.</span> <span class="nav-text">entitlements</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#provisioning-profile"><span class="nav-number">2.0.5.</span> <span class="nav-text">provisioning profile</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#签名相关文件的处理"><span class="nav-number">2.0.6.</span> <span class="nav-text">签名相关文件的处理</span></a></li></ol></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建时签名过程"><span class="nav-number">3.</span> <span class="nav-text">构建时签名过程</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#验证"><span class="nav-number">4.</span> <span class="nav-text">验证</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#关于商店包"><span class="nav-number">5.</span> <span class="nav-text">关于商店包</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#参考"><span class="nav-number">6.</span> <span class="nav-text">参考</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
+        appKey: 'Pfz8y5QNzgWpslPcrKe12GjA',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
