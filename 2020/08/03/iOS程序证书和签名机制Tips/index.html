@@ -82,22 +82,22 @@
 <meta name="description" content="基本概念涉及的算法 非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。 摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 根据哈希值无法反推出数据是什么 。  签名算法：发送方：  把原始数据计算hash 将hash使用私钥加密后获得加密后数据，叫做签名 将明文同签名一起发送给接收方。  接收方：  收到后使用">
 <meta property="og:type" content="article">
 <meta property="og:title" content="iOS程序证书和签名机制Tips">
-<meta property="og:url" content="http://yoursite.com/2020/08/03/certification_signing_machanism/index.html">
+<meta property="og:url" content="http://yoursite.com/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/index.html">
 <meta property="og:site_name" content="Kevinlma的博客">
 <meta property="og:description" content="基本概念涉及的算法 非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。 摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 根据哈希值无法反推出数据是什么 。  签名算法：发送方：  把原始数据计算hash 将hash使用私钥加密后获得加密后数据，叫做签名 将明文同签名一起发送给接收方。  接收方：  收到后使用">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=161&originWidth=531&size=14201&status=done&style=none&width=531">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439585696-b0e5e92e-7240-4dd1-abde-147dba6bb344.png#align=left&display=inline&height=361&margin=%5Bobject%20Object%5D&name=image.png&originHeight=361&originWidth=531&size=22862&status=done&style=none&width=531">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439713361-2d1ca37e-da81-43f5-a5d3-707e1338351e.png#align=left&display=inline&height=42&margin=%5Bobject%20Object%5D&name=image.png&originHeight=84&originWidth=2064&size=29628&status=done&style=none&width=1032">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447403262-240299c7-7a43-44fe-b9c1-77fc3af8b9f5.png#align=left&display=inline&height=564&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1128&originWidth=1432&size=221712&status=done&style=none&width=716">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447482518-ff31f928-1a75-4914-bbb3-91b3bfa4b23d.png#align=left&display=inline&height=91&margin=%5Bobject%20Object%5D&name=image.png&originHeight=182&originWidth=2852&size=235113&status=done&style=none&width=1426">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596443753419-cd5bbae2-ddb8-4de8-938e-d0a536ec3b39.png#align=left&display=inline&height=103&margin=%5Bobject%20Object%5D&name=image.png&originHeight=206&originWidth=294&size=27885&status=done&style=none&width=147">
-<meta property="og:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596444548763-0ff0e9ee-a33a-43bf-a32d-933aec5110f2.png#align=left&display=inline&height=60&margin=%5Bobject%20Object%5D&name=image.png&originHeight=120&originWidth=470&size=14194&status=done&style=none&width=235">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439585696-b0e5e92e-7240-4dd1-abde-147dba6bb344.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439713361-2d1ca37e-da81-43f5-a5d3-707e1338351e.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596447403262-240299c7-7a43-44fe-b9c1-77fc3af8b9f5.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596447482518-ff31f928-1a75-4914-bbb3-91b3bfa4b23d.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596443753419-cd5bbae2-ddb8-4de8-938e-d0a536ec3b39.png">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200811140725.png">
 <meta property="article:published_time" content="2020-08-03T11:29:47.000Z">
-<meta property="article:modified_time" content="2020-08-03T09:51:24.452Z">
+<meta property="article:modified_time" content="2020-08-11T06:07:34.363Z">
 <meta property="article:author" content="Kevinlma">
 <meta property="article:tag" content="技术原理">
 <meta name="twitter:card" content="summary">
-<meta name="twitter:image" content="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=161&originWidth=531&size=14201&status=done&style=none&width=531">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png">
 
 
 
@@ -127,7 +127,7 @@
 
 
 
-  <link rel="canonical" href="http://yoursite.com/2020/08/03/certification_signing_machanism/"/>
+  <link rel="canonical" href="http://yoursite.com/2020/08/03/iOS程序证书和签名机制Tips/"/>
 
 
 
@@ -260,7 +260,7 @@
   
   
   <div class="post-block">
-    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/certification_signing_machanism/">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
       <meta itemprop="name" content="Kevinlma">
@@ -330,8 +330,8 @@
                 <span class="post-meta-item-icon">
                   <i class="fa fa-comment-o"></i>
                 </span>
-                <a href="/2020/08/03/certification_signing_machanism/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/03/certification_signing_machanism/" itemprop="commentCount"></span>
+                <a href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/" itemprop="commentCount"></span>
                 </a>
               </span>
             
@@ -380,12 +380,12 @@
 <li>自己对原始数据计算hash值。</li>
 <li>将计算得出的hash和解密后的hash进行比较，就可以知道明文是否被篡改过。</li>
 </ol>
-<p><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png#align=left&display=inline&height=161&margin=%5Bobject%20Object%5D&name=image.png&originHeight=161&originWidth=531&size=14201&status=done&style=none&width=531" alt="image.png"></p>
+<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439550590-c4473796-9579-4ad8-a531-5354b9f14e4c.png" alt=""></p>
 <h4 id="证书"><a href="#证书" class="headerlink" title="证书"></a>证书</h4><p>接收方如果要接收多个来源的数据，就需要保存多个来源的公钥，管理非常不便。所以一般会把公钥也放在发送的数据中。但这样一来，对于收到的公私是否是真的，接收方就不能确定了。为了解决这个问题，一般会使用一个可信的第三方机构，通过第三方机构对用到的公钥也做一次签名。这个第三方机构叫做证书颁发机构（Certification Authority）,也就是CA。公钥及其相关签名信息整个放在一个文件里，叫做证书。</p>
-<p>接受者一般保存CA的公钥就可以，之后验证接收的公钥合法性，再验证接收的数据的合法性。CA有时候也会有多个，形成链条。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439585696-b0e5e92e-7240-4dd1-abde-147dba6bb344.png#align=left&display=inline&height=361&margin=%5Bobject%20Object%5D&name=image.png&originHeight=361&originWidth=531&size=22862&status=done&style=none&width=531" alt="image.png"></p>
+<p>接受者一般保存CA的公钥就可以，之后验证接收的公钥合法性，再验证接收的数据的合法性。CA有时候也会有多个，形成链条。<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439585696-b0e5e92e-7240-4dd1-abde-147dba6bb344.png" alt=""></p>
 <h2 id="开发者证书"><a href="#开发者证书" class="headerlink" title="开发者证书"></a>开发者证书</h2><p>只有通过iOS系统的签名校验，才能安装到手机上。开发阶段需要频繁修改文件，安装测试等，不能每次都是请求Apple进行签名才能安装。所以需要一种开发者可以给自己签名的机制，同时又能保证安全。</p>
-<h4 id="申请创建"><a href="#申请创建" class="headerlink" title="申请创建"></a>申请创建</h4><p>一般是通过KeyChain里的证书助理，填写邮箱和名称后，创建一个.certSigningRequest文件，之后保存到磁盘上。这时在KeyChain里已经生成好了一对公钥和私钥。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596439713361-2d1ca37e-da81-43f5-a5d3-707e1338351e.png#align=left&display=inline&height=42&margin=%5Bobject%20Object%5D&name=image.png&originHeight=84&originWidth=2064&size=29628&status=done&style=none&width=1032" alt="image.png"></p>
-<h4 id="提交Apple验证"><a href="#提交Apple验证" class="headerlink" title="提交Apple验证"></a>提交Apple验证</h4><p>之后我们会在Apple的网站上，上传这个request文件。Apple生成一个.cer证书文件，我们下载到本地后，双击安装，就可以在KeyChain里看到安装的证书。<br>查看安装的证书信息。<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447403262-240299c7-7a43-44fe-b9c1-77fc3af8b9f5.png#align=left&display=inline&height=564&margin=%5Bobject%20Object%5D&name=image.png&originHeight=1128&originWidth=1432&size=221712&status=done&style=none&width=716" alt="image.png"></p>
+<h4 id="申请创建"><a href="#申请创建" class="headerlink" title="申请创建"></a>申请创建</h4><p>一般是通过KeyChain里的证书助理，填写邮箱和名称后，创建一个.certSigningRequest文件，之后保存到磁盘上。这时在KeyChain里已经生成好了一对公钥和私钥。<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596439713361-2d1ca37e-da81-43f5-a5d3-707e1338351e.png" alt=""></p>
+<h4 id="提交Apple验证"><a href="#提交Apple验证" class="headerlink" title="提交Apple验证"></a>提交Apple验证</h4><p>之后我们会在Apple的网站上，上传这个request文件。Apple生成一个.cer证书文件，我们下载到本地后，双击安装，就可以在KeyChain里看到安装的证书。<br>查看安装的证书信息。<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596447403262-240299c7-7a43-44fe-b9c1-77fc3af8b9f5.png" alt=""></p>
 <ol>
 <li>证书信息，App根据我们的账号生成</li>
 <li>颁发机构信息</li>
@@ -419,8 +419,10 @@
 <h4 id="签名相关文件的处理"><a href="#签名相关文件的处理" class="headerlink" title="签名相关文件的处理"></a>签名相关文件的处理</h4><p>证书在构建时，会一起打进安装包里，会重命名为 <code>certificate.cer</code> 。provisitioning profile文件会被重命名为 <code>embedded.mobileprovision</code> 。</p>
 </li>
 </ol>
-<h2 id="构建时签名过程"><a href="#构建时签名过程" class="headerlink" title="构建时签名过程"></a>构建时签名过程</h2><p>每一次build中都会涉及签名过程，包括framework和主项目二进制。使用的证书是provisioning profile里配好的。比如<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596447482518-ff31f928-1a75-4914-bbb3-91b3bfa4b23d.png#align=left&display=inline&height=91&margin=%5Bobject%20Object%5D&name=image.png&originHeight=182&originWidth=2852&size=235113&status=done&style=none&width=1426" alt="image.png"><br>在生成的安装包中， 还会生成一个文件夹<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596443753419-cd5bbae2-ddb8-4de8-938e-d0a536ec3b39.png#align=left&display=inline&height=103&margin=%5Bobject%20Object%5D&name=image.png&originHeight=206&originWidth=294&size=27885&status=done&style=none&width=147" alt="image.png"><br>里面是一个plist格式的文件，包含了所有资源文件的md5值。</p>
-<p>二进制制的签名信息会嵌入到二进制文件里，包括主项目和framework。二进制里会增加一个段<br><img src="https://cdn.nlark.com/yuque/0/2020/png/730418/1596444548763-0ff0e9ee-a33a-43bf-a32d-933aec5110f2.png#align=left&display=inline&height=60&margin=%5Bobject%20Object%5D&name=image.png&originHeight=120&originWidth=470&size=14194&status=done&style=none&width=235" alt="image.png"></p>
+<h2 id="构建时签名过程"><a href="#构建时签名过程" class="headerlink" title="构建时签名过程"></a>构建时签名过程</h2><p>每一次build中都会涉及签名过程，包括framework和主项目二进制。使用的证书是provisioning profile里配好的。比如<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596447482518-ff31f928-1a75-4914-bbb3-91b3bfa4b23d.png" alt=""></p>
+<p>在生成的安装包中， 还会生成一个文件夹<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/1596443753419-cd5bbae2-ddb8-4de8-938e-d0a536ec3b39.png" alt=""></p>
+<p>里面是一个plist格式的文件，包含了所有资源文件的md5值。</p>
+<p>二进制制的签名信息会嵌入到二进制文件里，包括主项目和framework。二进制里会增加一个段<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200811140725.png" alt=""></p>
 <h2 id="验证"><a href="#验证" class="headerlink" title="验证"></a>验证</h2><p>在App安装，启动，运行等不同阶段，系统会进行一些合法性校验。有了前面的各种铺垫，我们大概可以了解，系统从证书颁发机构的合法性校验开始（Root CA的公钥是内置在设备系统里的，所以证书校验链条最上层的公钥不需要提供），逐步验证证书的合法性、公钥的合法性，直到App包里文件的合法性。</p>
 <h2 id="关于商店包"><a href="#关于商店包" class="headerlink" title="关于商店包"></a>关于商店包</h2><p>关于商店包会有几个疑问：</p>
 <ol>
