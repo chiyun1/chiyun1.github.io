@@ -1,0 +1,823 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="qSgLYpPb2QZejzl75yENa3JN0YSGDE4o8PolHoKnhQE" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="持续集成," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="使用pipe的背景项目中的测试包以及发布包的构建是通过Jenkins来进行的，使用的是自由风格的任务，但主要的构建任务是写在一系列的python脚本里的。比如一个Release的构建任务，基本就是设置好git的仓库地址，账号密码，然后在构建的一栏里选择执行shell, 然后填上一句类似python &#x2F;...&#x2F;build.py -type adhoc这样的语句就行。其中build.py是从项目初期的">
+<meta property="og:type" content="article">
+<meta property="og:title" content="Jenkins中使用pipe使用总结">
+<meta property="og:url" content="http://yoursite.com/2020/09/25/Jenkins-pipe-using-tips-md/index.html">
+<meta property="og:site_name" content="Kevinlma的博客">
+<meta property="og:description" content="使用pipe的背景项目中的测试包以及发布包的构建是通过Jenkins来进行的，使用的是自由风格的任务，但主要的构建任务是写在一系列的python脚本里的。比如一个Release的构建任务，基本就是设置好git的仓库地址，账号密码，然后在构建的一栏里选择执行shell, 然后填上一句类似python &#x2F;...&#x2F;build.py -type adhoc这样的语句就行。其中build.py是从项目初期的">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200927124754.png">
+<meta property="article:published_time" content="2020-09-25T08:49:39.302Z">
+<meta property="article:modified_time" content="2020-09-27T04:51:48.126Z">
+<meta property="article:author" content="Kevinlma">
+<meta property="article:tag" content="持续集成">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200927124754.png">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2020/09/25/Jenkins-pipe-using-tips-md/"/>
+
+
+
+
+
+  <title>Jenkins中使用pipe使用总结 | Kevinlma的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kevinlma的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物来顺应，未来不迎，当时不杂，既过不恋</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/25/Jenkins-pipe-using-tips-md/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.gif">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">Jenkins中使用pipe使用总结</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-25T16:49:39+08:00">
+                2020-09-25
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">开发技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2020/09/25/Jenkins-pipe-using-tips-md/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/25/Jenkins-pipe-using-tips-md/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="使用pipe的背景"><a href="#使用pipe的背景" class="headerlink" title="使用pipe的背景"></a>使用pipe的背景</h2><p>项目中的测试包以及发布包的构建是通过Jenkins来进行的，使用的是自由风格的任务，但主要的构建任务是写在一系列的python脚本里的。比如一个Release的构建任务，基本就是设置好git的仓库地址，账号密码，然后在构建的一栏里选择<code>执行shell</code>, 然后填上一句类似<code>python /.../build.py -type adhoc</code>这样的语句就行。其中build.py是从项目初期的一些自动化构建脚本整合而来的，涉及的内容包括<code>增加build号</code>, <code>构建ipa</code>, <code>上传测试包</code>, <code>上传符号</code>, <code>发邮件</code>等一系列操作。</p>
+<p>这种方式虽然使用起来很简单，但是也逐渐暴露出一些弊病，比如</p>
+<ol>
+<li>涉及到的所有步骤都是包含在build.py及其子调用里。如果想只进行其中某一个步骤，或者构建失败后，想从中间某个步骤接着重新够建，这是做不到的。必须重头再构建一遍。</li>
+<li>构建错误不好排查，只能从整体的构建日志里去查，看看是哪一步出错了。</li>
+<li>Jenkins界面上也不太友好。一个构建步骤开始后，基本只能等着结果或者出错，或者成功。无法从界面上直观的看出进行到什么阶段，以及花费了多长时间</li>
+</ol>
+<p>所以基于上面的问题，就对构建方式进行了改造，同时熟悉了一次Jenkins的pipe机制</p>
+<h2 id="pipe简介"><a href="#pipe简介" class="headerlink" title="pipe简介"></a>pipe简介</h2><p>pipe的机制在官网上有详细的介绍。<a href="https://www.jenkins.io/doc/book/pipeline/#" target="_blank" rel="noopener">https://www.jenkins.io/doc/book/pipeline/#</a>。简单的理解就是某一个pipe做一项简单的工作，然后通过pipe的衔接来流程化完成一系列任务。pipe的语法有两种形式，<code>Declarative Pipeline</code>和<code>Scripted Pipeline</code>两种形式。<br>创建了pipe类型的Job之后，可以在底部流水线模块，选择<code>Pipeline script</code>或者<code>Pipeline script from SCM</code>。前者是将配置直接写在Jenkins上。后者是将配置写在一个文件里，并且托管到某一个代码仓库,文件一般是Jenkinsfile。后者在Job启动时，先去拉取托管代码，再根据配置的相对路径读取配置文件，继而执行配置的pipe内容。</p>
+<p>考虑到可以将配置托管起来，编写、维护都比较方便。所以就使用了SCM的方式，将相关配置托管在一个CI脚本仓库里，并且使用了<code>Declarative Pipeline</code>的语法形式。</p>
+<p>基本的pipe结构大致是以下这样</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br></pre></td><td class="code"><pre><span class="line">pipeline&#123;</span><br><span class="line">    agent&#123;</span><br><span class="line">        label &quot;$BuildNodeName&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    environment&#123;</span><br><span class="line">        SHARED_PARMS &#x3D; &quot;&quot;</span><br><span class="line">    &#125;</span><br><span class="line">    stages&#123;</span><br><span class="line">        stage(&quot;stage 1&quot;)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                sh &#39;do simple work&#39;</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>其中<code>agent</code>是该任务执行的节点名称。<code>environment</code>中可以配置一些环境变量.每个<code>stage</code>里包含一个<code>steps</code>，<code>stage</code>的名称会在Jenkins的界面上出现，作为流水线中的一环。<code>steps</code>中是具体该环节要执行的一系列指令。</p>
+<h2 id="构建流程改造Tips"><a href="#构建流程改造Tips" class="headerlink" title="构建流程改造Tips"></a>构建流程改造Tips</h2><p>由于之前的构建脚本中已经笼统包含了所有的构建内容，所以首先必须要做的就是把各个步骤拆分出来。这部分跟具体项目有关，就不用详细说了。最后达到效果是构建，改build号，该项目配置，构建.app文件，导出ipa以及邮件等许多操作，都可以通过单独的脚本来独立运行。之后就是通过pipeline把这些操作衔接起来。<br>主要的写法很简单，所以只简单记录一下一些注意事项，做个备忘</p>
+<h3 id="参数和环境变量"><a href="#参数和环境变量" class="headerlink" title="参数和环境变量"></a>参数和环境变量</h3><ul>
+<li>环境变量的引用形式是比如<code>&quot;$env.WORKSPACE&quot;</code>。环境变量可以是Jenkins预留的环境变量，也可以是节点机制配置的自定义环境变量。</li>
+<li>参数的引用是比如 <code>&quot;$BuildNodeName&quot;</code>。参数的传入，不论是直接运行job，还是通过pipe，都需要首先在当前Job配置中，勾选<code>参数化构建过程</code>, 预先设置好要用的参数和类型。</li>
+<li><strong>注意都是使用<code>双引号</code>, 变量才能被正确替换，<code>单引号</code>会认为是自然文本输出，不替换变量。这个地方卡了一段时间找不到问题。</strong></li>
+<li><code>environment</code>中，可以设置一些变量，这些变量可以在后续的steps中，以参数的形式进行引用。</li>
+</ul>
+<h3 id="work-directory"><a href="#work-directory" class="headerlink" title="work directory"></a>work directory</h3><p>在steps中，如果需要切换当前的工作目录，经实验使用<code>sh &quot;cd xxx&quot;</code>这种方式是不起作用的。正确的方式是使用<code>dir</code>语法将要在子目录执行的steps包起来，比如如下建立一个子目录，在里面获取git仓库代码</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br></pre></td><td class="code"><pre><span class="line">sh &#39;mkdir -p Appcode&#39;</span><br><span class="line">dir(&quot;Appcode&quot;)</span><br><span class="line">&#123;</span><br><span class="line">    git branch: &quot;$APP_GIT_BRANCH&quot;,</span><br><span class="line">    credentialsId: &#39;xxxx&#39;,</span><br><span class="line">    url: &#39;$APP_GIT_URL&#39;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="parallel"><a href="#parallel" class="headerlink" title="parallel"></a>parallel</h3><p>有些步骤希望并行进行。比如实际构建中，希望内测版，企业版的同时构建和分发，这时可以用<code>parallel</code>语法，声明两个任务并行执行。<strong>如果是在同一个节点机器上，别忘了配置节点的并行任务数量大于1</strong>。Jenkins官网建议可以设置成CPU核的数量。语法结构大致如下</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br></pre></td><td class="code"><pre><span class="line">stage(&quot;run all job&quot;)&#123;</span><br><span class="line">    parallel&#123;</span><br><span class="line">        stage(&quot;build adhoc&quot;)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                work 1</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">        stage(&quot;build inhouse&quot;)&#123;</span><br><span class="line">            steps&#123;</span><br><span class="line">                work 2</span><br><span class="line">            &#125;</span><br><span class="line">        &#125;</span><br><span class="line">    &#125;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+
+<h3 id="多个Job配合"><a href="#多个Job配合" class="headerlink" title="多个Job配合"></a>多个Job配合</h3><p>为了让构建更加灵活，可以采用多个Job进行配合。比如纯粹的构建内测版，以及企业版可以分别建立一个单独的Job。再建立一个上层的Job, 这个Job负责升build号，之后启动多个Job完成具体构建任务，子Job都完成之后，上层Job再发邮件等。</p>
+<p>启动一个子Job的语法如下：</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build job: &#39;&#x2F;Sub_Job_Name&#39;, parameters:[[$class: &#39;StringParameterValue&#39;, name: &#39;BuildNodeName&#39;, value: &quot;$BuildNodeName&quot;]]</span><br></pre></td></tr></table></figure>
+
+<p>其中<code>Sub_Job_Name</code>是子任务的名字。子任务有个字符参数是BuildNodeName，通过上面方式可以在启动子Job时，传递相应的参数值过去。</p>
+<p>在step中通过<code>build</code>启动子任务，默认是会一直等待该任务执行结束才继续进行后面的工作。如果这个子任务只是想触发一下，并不需要等待执行结果，可以使用<code>wait</code>参数。</p>
+<figure class="highlight plain"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">build job: &#39;&#x2F;Sub_Job_Name&#39;, parameters:[[$class: &#39;StringParameterValue&#39;, name: &#39;BuildNodeName&#39;, value: &quot;$BuildNodeName&quot;]], wait:false</span><br></pre></td></tr></table></figure>
+
+<h2 id="构造流程改造效果"><a href="#构造流程改造效果" class="headerlink" title="构造流程改造效果"></a>构造流程改造效果</h2><p>使用体验相比旧的方式还是很不错的，Jenkins上外观也有了变化。<br><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200927124754.png" alt=""></p>
+<p>新流程大致有如下几个优点：</p>
+<ol>
+<li>通过pipe化的改造，后续对构建流程扩展，或者流程改造就方便很多，灵活很多。</li>
+<li>目前从界面上可以清楚的看到执行到了哪个stage。通过点击看stage的log，也可以清楚的看到每个step的运行情况，</li>
+<li>每个stage, step都有统计时间，方便做构建时长的优化。</li>
+</ol>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%8C%81%E7%BB%AD%E9%9B%86%E6%88%90/" rel="tag"># 持续集成</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/" rel="next" title="iOS程序证书和签名机制Tips">
+                <i class="fa fa-chevron-left"></i> iOS程序证书和签名机制Tips
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <p class="site-author-name" itemprop="name">Kevinlma</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">7</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#使用pipe的背景"><span class="nav-number">1.</span> <span class="nav-text">使用pipe的背景</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#pipe简介"><span class="nav-number">2.</span> <span class="nav-text">pipe简介</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构建流程改造Tips"><span class="nav-number">3.</span> <span class="nav-text">构建流程改造Tips</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#参数和环境变量"><span class="nav-number">3.1.</span> <span class="nav-text">参数和环境变量</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#work-directory"><span class="nav-number">3.2.</span> <span class="nav-text">work directory</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#parallel"><span class="nav-number">3.3.</span> <span class="nav-text">parallel</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#多个Job配合"><span class="nav-number">3.4.</span> <span class="nav-text">多个Job配合</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#构造流程改造效果"><span class="nav-number">4.</span> <span class="nav-text">构造流程改造效果</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2020</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
+        appKey: 'Pfz8y5QNzgWpslPcrKe12GjA',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
