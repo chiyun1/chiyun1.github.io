@@ -1,0 +1,816 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="qSgLYpPb2QZejzl75yENa3JN0YSGDE4o8PolHoKnhQE" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="技术原理," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="项目中有时会碰到与block有关的疑难问题，要解决的话对block的原理需要有一个较清晰的认识。虽然网上介绍很多，不过还是自己尝试分析一次记忆更深刻一些。 block类型 非arc工程中，block分为三种，stack、heap和global。stack的block在生命周期结束时就会释放(花括号)heap的只有当引用计数为0时才会被释放 arc的工程中，stack的block会自动转化为heap">
+<meta property="og:type" content="article">
+<meta property="og:title" content="ObjC中的Block机制学习">
+<meta property="og:url" content="http://yoursite.com/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/index.html">
+<meta property="og:site_name" content="Kevinlma的博客">
+<meta property="og:description" content="项目中有时会碰到与block有关的疑难问题，要解决的话对block的原理需要有一个较清晰的认识。虽然网上介绍很多，不过还是自己尝试分析一次记忆更深刻一些。 block类型 非arc工程中，block分为三种，stack、heap和global。stack的block在生命周期结束时就会释放(花括号)heap的只有当引用计数为0时才会被释放 arc的工程中，stack的block会自动转化为heap">
+<meta property="article:published_time" content="2021-05-11T04:09:32.000Z">
+<meta property="article:modified_time" content="2021-05-11T04:10:17.628Z">
+<meta property="article:author" content="Kevinlma">
+<meta property="article:tag" content="技术原理">
+<meta name="twitter:card" content="summary">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/05/11/ObjC中的Block机制学习/"/>
+
+
+
+
+
+  <title>ObjC中的Block机制学习 | Kevinlma的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kevinlma的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物来顺应，未来不迎，当时不杂，既过不恋</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">ObjC中的Block机制学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-11T12:09:32+08:00">
+                2021-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">开发技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <p>项目中有时会碰到与block有关的疑难问题，要解决的话对block的原理需要有一个较清晰的认识。虽然网上介绍很多，不过还是自己尝试分析一次记忆更深刻一些。</p>
+<h3 id="block类型"><a href="#block类型" class="headerlink" title="block类型"></a>block类型</h3><ul>
+<li>非arc工程中，block分为三种，stack、heap和global。<br>stack的block在生命周期结束时就会释放(花括号)<br>heap的只有当引用计数为0时才会被释放</li>
+<li>arc的工程中，stack的block会自动转化为heap。</li>
+<li>block是一个伪对象，针对stack的block， 对其进行retain，release没有效果。所以在非arc工程中，要讲block作为参数外传，赋值时，必须调用copy</li>
+<li>在arc下，只有block赋值给了一个strong类型，或者是作为参数向外传，都会自动变为堆类型block</li>
+</ul>
+<h3 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h3><ul>
+<li>在 ARC 中，捕获外部了变量的 block 的类会是 <code>__NSMallocBlock__</code> 或者 <code>__NSStackBlock__</code>，如果 block 被赋值给了某个变量在这个过程中会执行 <code>_Block_copy</code> 将原有的 <code>__NSStackBlock__</code> 变成 <code>__NSMallocBlock__</code>；但是如果 block 没有被赋值给某个变量，那它的类型就是 <code>__NSStackBlock__</code>；没有捕获外部变量的 block 的类会是 <code>__NSGlobalBlock__</code> 即不在堆上，也不在栈上，它类似 C 语言函数一样会在代码段中。</li>
+<li>在非 ARC 中，捕获了外部变量的 block 的类会是 <code>__NSStackBlock__</code>，放置在栈上，没有捕获外部变量的 block 时与 ARC 环境下情况相同</li>
+</ul>
+<p>在每个 block 结构体的下面就会存放当前 block 持有的所有对象，无论强弱</p>
+<h3 id="Block的实现"><a href="#Block的实现" class="headerlink" title="Block的实现"></a>Block的实现</h3><p>*<em>将objc的代码用c重写后，可以看清楚block的原理 *</em> main.m</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#import <span class="meta-string">&lt;Foundation/Foundation.h&gt;</span></span></span><br><span class="line"></span><br><span class="line"><span class="keyword">int</span> main(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[]) &#123;</span><br><span class="line">    <span class="keyword">@autoreleasepool</span> &#123;</span><br><span class="line">        <span class="keyword">int</span> age = <span class="number">10</span>;</span><br><span class="line">        __block <span class="keyword">int</span> count = <span class="number">2</span>;</span><br><span class="line">        __block <span class="built_in">NSMutableDictionary</span> *userInfo = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line">        <span class="built_in">NSMutableDictionary</span> *Item = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line">        <span class="keyword">void</span>(^block)(<span class="keyword">int</span> ,<span class="keyword">int</span>) = ^(<span class="keyword">int</span> a, <span class="keyword">int</span> b)&#123;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"this is block,a = %d,b = %d"</span>,a,b);</span><br><span class="line"></span><br><span class="line">            count += <span class="number">1</span>;</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"this is block,age = %d, count=%d"</span>,age, count);</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>, Item);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            [userInfo setObject:<span class="string">@"a"</span> forKey:<span class="string">@"key"</span>];</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,userInfo);</span><br><span class="line">            userInfo = <span class="literal">nil</span>;</span><br><span class="line"></span><br><span class="line">            <span class="built_in">NSMutableDictionary</span> *obj = [<span class="built_in">NSMutableDictionary</span> dictionary];</span><br><span class="line">            <span class="built_in">NSLog</span>(<span class="string">@"%@"</span>,obj);</span><br><span class="line"></span><br><span class="line">        &#125;;</span><br><span class="line"></span><br><span class="line">        <span class="built_in">dispatch_async</span>(dispatch_get_main_queue(), ^&#123;</span><br><span class="line">            block(<span class="number">3</span>,<span class="number">5</span>);</span><br><span class="line">        &#125;);</span><br><span class="line">        </span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br></pre></td></tr></table></figure>
+<p>使用命令进行转化</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">xcrun -sdk iphoneos clang -arch arm64 -rewrite-objc main.m</span><br></pre></td></tr></table></figure>
+<p>可以得到转化后的c++代码关键部分</p>
+<figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br><span class="line">27</span><br><span class="line">28</span><br><span class="line">29</span><br><span class="line">30</span><br><span class="line">31</span><br><span class="line">32</span><br><span class="line">33</span><br><span class="line">34</span><br><span class="line">35</span><br><span class="line">36</span><br><span class="line">37</span><br><span class="line">38</span><br><span class="line">39</span><br><span class="line">40</span><br><span class="line">41</span><br><span class="line">42</span><br><span class="line">43</span><br><span class="line">44</span><br><span class="line">45</span><br><span class="line">46</span><br><span class="line">47</span><br><span class="line">48</span><br><span class="line">49</span><br><span class="line">50</span><br><span class="line">51</span><br><span class="line">52</span><br><span class="line">53</span><br><span class="line">54</span><br><span class="line">55</span><br><span class="line">56</span><br><span class="line">57</span><br><span class="line">58</span><br><span class="line">59</span><br><span class="line">60</span><br><span class="line">61</span><br><span class="line">62</span><br><span class="line">63</span><br><span class="line">64</span><br><span class="line">65</span><br><span class="line">66</span><br><span class="line">67</span><br><span class="line">68</span><br><span class="line">69</span><br><span class="line">70</span><br><span class="line">71</span><br><span class="line">72</span><br><span class="line">73</span><br><span class="line">74</span><br><span class="line">75</span><br><span class="line">76</span><br><span class="line">77</span><br><span class="line">78</span><br><span class="line">79</span><br><span class="line">80</span><br><span class="line">81</span><br><span class="line">82</span><br><span class="line">83</span><br><span class="line">84</span><br><span class="line">85</span><br><span class="line">86</span><br><span class="line">87</span><br><span class="line">88</span><br><span class="line">89</span><br><span class="line">90</span><br><span class="line">91</span><br><span class="line">92</span><br><span class="line">93</span><br><span class="line">94</span><br><span class="line">95</span><br><span class="line">96</span><br><span class="line">97</span><br><span class="line">98</span><br><span class="line">99</span><br><span class="line">100</span><br><span class="line">101</span><br><span class="line">102</span><br><span class="line">103</span><br><span class="line">104</span><br><span class="line">105</span><br><span class="line">106</span><br><span class="line">107</span><br></pre></td><td class="code"><pre><span class="line"><span class="meta">#<span class="meta-keyword">pragma</span> clang assume_nonnull end</span></span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">Block_byref_count_0</span> &#123;</span></span><br><span class="line">  <span class="keyword">void</span> *__isa;</span><br><span class="line">__Block_byref_count_0 *__forwarding;</span><br><span class="line"> <span class="keyword">int</span> __flags;</span><br><span class="line"> <span class="keyword">int</span> __size;</span><br><span class="line"> <span class="keyword">int</span> count;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">Block_byref_userInfo_1</span> &#123;</span></span><br><span class="line">  <span class="keyword">void</span> *__isa;</span><br><span class="line">__Block_byref_userInfo_1 *__forwarding;</span><br><span class="line"> <span class="keyword">int</span> __flags;</span><br><span class="line"> <span class="keyword">int</span> __size;</span><br><span class="line"> <span class="keyword">void</span> (*__Block_byref_id_object_copy)(<span class="keyword">void</span>*, <span class="keyword">void</span>*);</span><br><span class="line"> <span class="keyword">void</span> (*__Block_byref_id_object_dispose)(<span class="keyword">void</span>*);</span><br><span class="line"> NSMutableDictionary *userInfo;</span><br><span class="line">&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_0</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span>* <span class="title">Desc</span>;</span></span><br><span class="line">  <span class="keyword">int</span> age;</span><br><span class="line">  NSMutableDictionary *Item;</span><br><span class="line">  __Block_byref_count_0 *count; <span class="comment">// by ref</span></span><br><span class="line">  __Block_byref_userInfo_1 *userInfo; <span class="comment">// by ref</span></span><br><span class="line">  __main_block_impl_0(<span class="keyword">void</span> *fp, struct __main_block_desc_0 *desc, <span class="keyword">int</span> _age, NSMutableDictionary *_Item, __Block_byref_count_0 *_count, __Block_byref_userInfo_1 *_userInfo, <span class="keyword">int</span> flags=<span class="number">0</span>) : age(_age), Item(_Item), count(_count-&gt;__forwarding), userInfo(_userInfo-&gt;__forwarding) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_0(struct __main_block_impl_0 *__cself, <span class="keyword">int</span> a, <span class="keyword">int</span> b) &#123;</span><br><span class="line">  __Block_byref_count_0 *count = __cself-&gt;count; <span class="comment">// bound by ref</span></span><br><span class="line">  __Block_byref_userInfo_1 *userInfo = __cself-&gt;userInfo; <span class="comment">// bound by ref</span></span><br><span class="line">  <span class="keyword">int</span> age = __cself-&gt;age; <span class="comment">// bound by copy</span></span><br><span class="line">  NSMutableDictionary *Item = __cself-&gt;Item; <span class="comment">// bound by copy</span></span><br><span class="line"></span><br><span class="line">            NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_0,a,b);</span><br><span class="line"></span><br><span class="line">            (count-&gt;__forwarding-&gt;count) += <span class="number">1</span>;</span><br><span class="line">            NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_1,age, (count-&gt;__forwarding-&gt;count));</span><br><span class="line">            NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_2, Item);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            ((<span class="keyword">void</span> (*)(id, SEL, ObjectType _Nonnull, id))(<span class="keyword">void</span> *)objc_msgSend)((id)(userInfo-&gt;__forwarding-&gt;userInfo), sel_registerName(<span class="string">"setObject:forKey:"</span>), (id _Nonnull)(NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_3, (id)(NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_4);</span><br><span class="line"></span><br><span class="line"></span><br><span class="line">            NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_5,(userInfo-&gt;__forwarding-&gt;userInfo));</span><br><span class="line">            (userInfo-&gt;__forwarding-&gt;userInfo) = __null;</span><br><span class="line"></span><br><span class="line">            NSMutableDictionary *obj = ((NSMutableDictionary * _Nonnull (*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)objc_getClass(<span class="string">"NSMutableDictionary"</span>), sel_registerName(<span class="string">"dictionary"</span>));</span><br><span class="line">            NSLog((NSString *)&amp;__NSConstantStringImpl__var_folders_ks_7j1g9n816j95j9sr80kztrn40000gp_T_main_641ab4_mi_6,obj);</span><br><span class="line"></span><br><span class="line">        &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_copy_0(struct __main_block_impl_0*dst, struct __main_block_impl_0*src) &#123;_Block_object_assign((<span class="keyword">void</span>*)&amp;dst-&gt;count, (<span class="keyword">void</span>*)src-&gt;count, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);_Block_object_assign((<span class="keyword">void</span>*)&amp;dst-&gt;Item, (<span class="keyword">void</span>*)src-&gt;Item, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);_Block_object_assign((<span class="keyword">void</span>*)&amp;dst-&gt;userInfo, (<span class="keyword">void</span>*)src-&gt;userInfo, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_dispose_0(struct __main_block_impl_0*src) &#123;_Block_object_dispose((<span class="keyword">void</span>*)src-&gt;count, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);_Block_object_dispose((<span class="keyword">void</span>*)src-&gt;Item, <span class="number">3</span><span class="comment">/*BLOCK_FIELD_IS_OBJECT*/</span>);_Block_object_dispose((<span class="keyword">void</span>*)src-&gt;userInfo, <span class="number">8</span><span class="comment">/*BLOCK_FIELD_IS_BYREF*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_0</span> &#123;</span></span><br><span class="line">  <span class="keyword">size_t</span> reserved;</span><br><span class="line">  <span class="keyword">size_t</span> Block_size;</span><br><span class="line">  <span class="keyword">void</span> (*copy)(struct __main_block_impl_0*, struct __main_block_impl_0*);</span><br><span class="line">  <span class="keyword">void</span> (*dispose)(struct __main_block_impl_0*);</span><br><span class="line">&#125; __main_block_desc_0_DATA = &#123; <span class="number">0</span>, <span class="keyword">sizeof</span>(struct __main_block_impl_0), __main_block_copy_0, __main_block_dispose_0&#125;;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">main_block_impl_1</span> &#123;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_1</span>* <span class="title">Desc</span>;</span></span><br><span class="line">  <span class="class"><span class="keyword">struct</span> __<span class="title">block_impl</span> *<span class="title">block</span>;</span></span><br><span class="line">  __main_block_impl_1(<span class="keyword">void</span> *fp, struct __main_block_desc_1 *desc, <span class="keyword">void</span> *_block, <span class="keyword">int</span> flags=<span class="number">0</span>) : block((struct __block_impl *)_block) &#123;</span><br><span class="line">    impl.isa = &amp;_NSConcreteStackBlock;</span><br><span class="line">    impl.Flags = flags;</span><br><span class="line">    impl.FuncPtr = fp;</span><br><span class="line">    Desc = desc;</span><br><span class="line">  &#125;</span><br><span class="line">&#125;;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_func_1(struct __main_block_impl_1 *__cself) &#123;</span><br><span class="line">  <span class="keyword">void</span> (*block)(<span class="keyword">int</span>, <span class="keyword">int</span>) = (<span class="keyword">void</span> (*)(<span class="keyword">int</span>, <span class="keyword">int</span>))__cself-&gt;block; <span class="comment">// bound by copy</span></span><br><span class="line"></span><br><span class="line">            ((<span class="keyword">void</span> (*)(__block_impl *, <span class="keyword">int</span>, <span class="keyword">int</span>))((__block_impl *)block)-&gt;FuncPtr)((__block_impl *)block, <span class="number">3</span>, <span class="number">5</span>);</span><br><span class="line">        &#125;</span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_copy_1(struct __main_block_impl_1*dst, struct __main_block_impl_1*src) &#123;_Block_object_assign((<span class="keyword">void</span>*)&amp;dst-&gt;block, (<span class="keyword">void</span>*)src-&gt;block, <span class="number">7</span><span class="comment">/*BLOCK_FIELD_IS_BLOCK*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __main_block_dispose_1(struct __main_block_impl_1*src) &#123;_Block_object_dispose((<span class="keyword">void</span>*)src-&gt;block, <span class="number">7</span><span class="comment">/*BLOCK_FIELD_IS_BLOCK*/</span>);&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> __<span class="title">main_block_desc_1</span> &#123;</span></span><br><span class="line">  <span class="keyword">size_t</span> reserved;</span><br><span class="line">  <span class="keyword">size_t</span> Block_size;</span><br><span class="line">  <span class="keyword">void</span> (*copy)(struct __main_block_impl_1*, struct __main_block_impl_1*);</span><br><span class="line">  <span class="keyword">void</span> (*dispose)(struct __main_block_impl_1*);</span><br><span class="line">&#125; __main_block_desc_1_DATA = &#123; <span class="number">0</span>, <span class="keyword">sizeof</span>(struct __main_block_impl_1), __main_block_copy_1, __main_block_dispose_1&#125;;</span><br><span class="line"><span class="function"><span class="keyword">int</span> <span class="title">main</span><span class="params">(<span class="keyword">int</span> argc, <span class="keyword">const</span> <span class="keyword">char</span> * argv[])</span> </span>&#123;</span><br><span class="line">    <span class="comment">/* @autoreleasepool */</span> &#123; __AtAutoreleasePool __autoreleasepool; </span><br><span class="line">        <span class="keyword">int</span> age = <span class="number">10</span>;</span><br><span class="line">        __attribute__((__blocks__(byref))) __Block_byref_count_0 count = &#123;(<span class="keyword">void</span>*)<span class="number">0</span>,(__Block_byref_count_0 *)&amp;count, <span class="number">0</span>, <span class="keyword">sizeof</span>(__Block_byref_count_0), <span class="number">2</span>&#125;;</span><br><span class="line">        __attribute__((__blocks__(byref))) __Block_byref_userInfo_1 userInfo = &#123;(<span class="keyword">void</span>*)<span class="number">0</span>,(__Block_byref_userInfo_1 *)&amp;userInfo, <span class="number">33554432</span>, <span class="keyword">sizeof</span>(__Block_byref_userInfo_1), __Block_byref_id_object_copy_131, __Block_byref_id_object_dispose_131, ((NSMutableDictionary * _Nonnull (*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)objc_getClass(<span class="string">"NSMutableDictionary"</span>), sel_registerName(<span class="string">"dictionary"</span>))&#125;;</span><br><span class="line">        NSMutableDictionary *Item = ((NSMutableDictionary * _Nonnull (*)(id, SEL))(<span class="keyword">void</span> *)objc_msgSend)((id)objc_getClass(<span class="string">"NSMutableDictionary"</span>), sel_registerName(<span class="string">"dictionary"</span>));</span><br><span class="line">        <span class="keyword">void</span>(*block)(<span class="keyword">int</span> ,<span class="keyword">int</span>) = ((<span class="keyword">void</span> (*)(<span class="keyword">int</span>, <span class="keyword">int</span>))&amp;__main_block_impl_0((<span class="keyword">void</span> *)__main_block_func_0, &amp;__main_block_desc_0_DATA, age, Item, (__Block_byref_count_0 *)&amp;count, (__Block_byref_userInfo_1 *)&amp;userInfo, <span class="number">570425344</span>));</span><br><span class="line"></span><br><span class="line">        dispatch_async(dispatch_get_main_queue(), ((<span class="keyword">void</span> (*)())&amp;__main_block_impl_1((<span class="keyword">void</span> *)__main_block_func_1, &amp;__main_block_desc_1_DATA, (<span class="keyword">void</span> *)block, <span class="number">570425344</span>)));</span><br><span class="line"></span><br><span class="line">    &#125;</span><br><span class="line">    <span class="keyword">return</span> <span class="number">0</span>;</span><br><span class="line">&#125;</span><br><span class="line"><span class="keyword">static</span> <span class="class"><span class="keyword">struct</span> <span class="title">IMAGE_INFO</span> &#123;</span> <span class="keyword">unsigned</span> version; <span class="keyword">unsigned</span> flag; &#125; _OBJC_IMAGE_INFO = &#123; <span class="number">0</span>, <span class="number">2</span> &#125;;</span><br></pre></td></tr></table></figure>
+
+
+<p>通过<code>__block</code>修饰关键词将一个变量转化为mutable时，其本质是创建一个结构体，然后创建一个与变量同名的结构体。比如count变量，就创建了一个<code>__Block_byref_count_0</code>的结构体</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">struct</span> __Block_byref_count_0 &#123;</span><br><span class="line">  <span class="keyword">void</span> *__isa;</span><br><span class="line">__Block_byref_count_0 *__forwarding;</span><br><span class="line"> <span class="keyword">int</span> __flags;</span><br><span class="line"> <span class="keyword">int</span> __size;</span><br><span class="line"> <span class="keyword">int</span> count;</span><br><span class="line">&#125;;</span><br><span class="line">...</span><br><span class="line">__attribute__((__blocks__(<span class="keyword">byref</span>))) __Block_byref_count_0 count = xxx</span><br></pre></td></tr></table></figure>
+<p>当要访问cout的值时，真正的实现是</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count-&gt;__forwarding-&gt;count</span><br></pre></td></tr></table></figure>
+<p>要修改count的值时，也是修改结构体里的值，而结构体地址并没有改变，从而达到count被动态修改的目的。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">count-&gt;__forwarding-&gt;count = <span class="number">22</span> <span class="comment">//example</span></span><br></pre></td></tr></table></figure>
+<p><strong>之前以为是通过把变量的地址直接捕获传给其他block，方便之后动态修改，然而其实理解有误，是用结构体封装过渡了一下。</strong></p>
+<p>可以看到block的本质，就是一个2个结构体+一个static静态函数。每个block会对应生成这三个部分</p>
+<h4 id="struct-block-impl-0"><a href="#struct-block-impl-0" class="headerlink" title="struct block_impl_0"></a>struct block_impl_0</h4><figure class="highlight cpp"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br><span class="line">4</span><br><span class="line">5</span><br><span class="line">6</span><br><span class="line">7</span><br><span class="line">8</span><br><span class="line">9</span><br><span class="line">10</span><br><span class="line">11</span><br><span class="line">12</span><br><span class="line">13</span><br><span class="line">14</span><br><span class="line">15</span><br><span class="line">16</span><br><span class="line">17</span><br><span class="line">18</span><br><span class="line">19</span><br><span class="line">20</span><br><span class="line">21</span><br><span class="line">22</span><br><span class="line">23</span><br><span class="line">24</span><br><span class="line">25</span><br><span class="line">26</span><br></pre></td><td class="code"><pre><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">xxx_block_impl_0</span></span></span><br><span class="line"><span class="class">    <span class="title">struct</span> __<span class="title">block_impl</span> <span class="title">impl</span>;</span> <span class="comment">//一个函数指针，存储静态方法. __block_impl可以理解为void*</span></span><br><span class="line">    <span class="class"><span class="keyword">struct</span> __<span class="title">xxx_block_desc</span> <span class="title">desc</span>;</span> <span class="comment">//desp结构体的指针，存储当前结构体的描述，主要是内存大小</span></span><br><span class="line">    __Block_byref_count_0 *count; <span class="comment">//带有__block前缀，block中可以改变值的被捕获变量。最终会传来变量的地址</span></span><br><span class="line">    <span class="keyword">int</span> age; <span class="comment">//捕获的值类型变量，是值拷贝，所以也就是在外修改变量，为什么不影响block里</span></span><br><span class="line">    NSMutalArray* item; <span class="comment">//对象变量，也是简单的对象赋值操作</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="class"><span class="keyword">struct</span> __<span class="title">xxx_block_desc</span></span></span><br><span class="line"><span class="class">&#123;</span></span><br><span class="line">    <span class="keyword">size_t</span> Block_size;<span class="comment">//impl结构的大小，因为有捕获的变量占据内存，所以需要知道大小</span></span><br><span class="line">    <span class="keyword">void</span> (*copy)(struct __xxx_block_impl_0* , struct __xxx_block_impl_0* ); <span class="comment">//copy方法</span></span><br><span class="line">    <span class="keyword">void</span> (*)(struct __xxx_block_impl_0*); <span class="comment">//释放方法</span></span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line"><span class="keyword">static</span> <span class="keyword">void</span> __xxx_block_func_1(struct __main_block_impl_1 *__cself) &#123; <span class="comment">//生成的静态方法</span></span><br><span class="line">   <span class="comment">//block中执行代码，执行block代码，相当于执行这个静态函数</span></span><br><span class="line">  <span class="keyword">int</span> age = __cself-&gt;age; 用到的外部变量，从结构体中去拿</span><br><span class="line">  balabala</span><br><span class="line">&#125;</span><br><span class="line"></span><br><span class="line">block的变量就是拿到了 __xxx_block_impl_0 结构体的指针，</span><br><span class="line">block = &amp; __xxx_block_impl_0(__xxx_block_func_1, &amp;__xxx_block_desc(), age)</span><br><span class="line"></span><br><span class="line">执行block的过程，就是调用结构体中的fn, 并传递自身的过程</span><br><span class="line">block-&gt;impl(block, age)</span><br></pre></td></tr></table></figure>
+
+
+<h3 id="Refer"><a href="#Refer" class="headerlink" title="Refer"></a>Refer</h3><p><a href="https://juejin.im/post/5b0181e15188254270643e88" target="_blank" rel="noopener">https://juejin.im/post/5b0181e15188254270643e88</a><br><a href="https://draveness.me/block-retain-object/" target="_blank" rel="noopener">https://draveness.me/block-retain-object/</a><br><a href="https://cloud.tencent.com/developer/article/1517593" target="_blank" rel="noopener">https://cloud.tencent.com/developer/article/1517593</a></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/" rel="tag"># 技术原理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2021/05/11/AFNetworking-learn/" rel="next" title="AFNetworking学习">
+                <i class="fa fa-chevron-left"></i> AFNetworking学习
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Kevinlma" />
+            
+              <p class="site-author-name" itemprop="name">Kevinlma</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">9</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-3"><a class="nav-link" href="#block类型"><span class="nav-number">1.</span> <span class="nav-text">block类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block的类型"><span class="nav-number">2.</span> <span class="nav-text">Block的类型</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Block的实现"><span class="nav-number">3.</span> <span class="nav-text">Block的实现</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#struct-block-impl-0"><span class="nav-number">3.1.</span> <span class="nav-text">struct block_impl_0</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#Refer"><span class="nav-number">4.</span> <span class="nav-text">Refer</span></a></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
+        appKey: 'Pfz8y5QNzgWpslPcrKe12GjA',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
