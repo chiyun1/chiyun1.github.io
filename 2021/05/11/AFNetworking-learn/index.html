@@ -1,0 +1,841 @@
+<!DOCTYPE html>
+
+
+
+  
+
+
+<html class="theme-next mist use-motion" lang="zh-Hans">
+<head>
+  <meta charset="UTF-8"/>
+<meta http-equiv="X-UA-Compatible" content="IE=edge" />
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+<meta name="theme-color" content="#222">
+<meta name="google-site-verification" content="qSgLYpPb2QZejzl75yENa3JN0YSGDE4o8PolHoKnhQE" />
+
+
+
+
+
+
+
+
+<meta http-equiv="Cache-Control" content="no-transform" />
+<meta http-equiv="Cache-Control" content="no-siteapp" />
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
+
+
+
+
+
+
+
+<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
+
+<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
+
+
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
+
+
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
+
+
+  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
+
+
+
+
+
+  <meta name="keywords" content="技术原理," />
+
+
+
+
+
+
+
+
+
+
+<meta name="description" content="AFURLSessionManager发起请求的核心类。通过 AFURLSessionManager 来创建并定制一个request。 主要的成员类一个Manager里持有着一些负责具体功能的类。  NSURLSession NSOperationQueue AFURLResponseSerialization AFSecurityPolicy AFNetworkReachabilityManag">
+<meta property="og:type" content="article">
+<meta property="og:title" content="AFNetworking学习">
+<meta property="og:url" content="http://yoursite.com/2021/05/11/AFNetworking-learn/index.html">
+<meta property="og:site_name" content="Kevinlma的博客">
+<meta property="og:description" content="AFURLSessionManager发起请求的核心类。通过 AFURLSessionManager 来创建并定制一个request。 主要的成员类一个Manager里持有着一些负责具体功能的类。  NSURLSession NSOperationQueue AFURLResponseSerialization AFSecurityPolicy AFNetworkReachabilityManag">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/AFGETCreateRequest.png#id=GFak4&originHeight=464&originWidth=904&originalType=binary&status=done&style=none">
+<meta property="og:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/AFGETDelegate.png#id=Yk5bB&originHeight=617&originWidth=932&originalType=binary&status=done&style=none">
+<meta property="article:published_time" content="2021-05-11T02:40:12.000Z">
+<meta property="article:modified_time" content="2021-05-11T02:45:05.397Z">
+<meta property="article:author" content="Kevinlma">
+<meta property="article:tag" content="技术原理">
+<meta name="twitter:card" content="summary">
+<meta name="twitter:image" content="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/AFGETCreateRequest.png#id=GFak4&originHeight=464&originWidth=904&originalType=binary&status=done&style=none">
+
+
+
+<script type="text/javascript" id="hexo.configurations">
+  var NexT = window.NexT || {};
+  var CONFIG = {
+    root: '/',
+    scheme: 'Mist',
+    version: '5.1.4',
+    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
+    fancybox: true,
+    tabs: true,
+    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
+    duoshuo: {
+      userId: '0',
+      author: '博主'
+    },
+    algolia: {
+      applicationID: '',
+      apiKey: '',
+      indexName: '',
+      hits: {"per_page":10},
+      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
+    }
+  };
+</script>
+
+
+
+  <link rel="canonical" href="http://yoursite.com/2021/05/11/AFNetworking-learn/"/>
+
+
+
+
+
+  <title>AFNetworking学习 | Kevinlma的博客</title>
+  
+
+
+
+
+
+
+
+
+<meta name="generator" content="Hexo 4.2.1"></head>
+
+<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+
+  
+  
+    
+  
+
+  <div class="container sidebar-position-left page-post-detail">
+    <div class="headband"></div>
+
+    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-wrapper">
+  <div class="site-meta ">
+    
+
+    <div class="custom-logo-site-title">
+      <a href="/"  class="brand" rel="start">
+        <span class="logo-line-before"><i></i></span>
+        <span class="site-title">Kevinlma的博客</span>
+        <span class="logo-line-after"><i></i></span>
+      </a>
+    </div>
+      
+        <p class="site-subtitle">物来顺应，未来不迎，当时不杂，既过不恋</p>
+      
+  </div>
+
+  <div class="site-nav-toggle">
+    <button>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+      <span class="btn-bar"></span>
+    </button>
+  </div>
+</div>
+
+<nav class="site-nav">
+  
+
+  
+    <ul id="menu" class="menu">
+      
+        
+        <li class="menu-item menu-item-home">
+          <a href="/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
+            
+            首页
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-tags">
+          <a href="/tags/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
+            
+            标签
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-categories">
+          <a href="/categories/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
+            
+            分类
+          </a>
+        </li>
+      
+        
+        <li class="menu-item menu-item-archives">
+          <a href="/archives/" rel="section">
+            
+              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
+            
+            归档
+          </a>
+        </li>
+      
+
+      
+    </ul>
+  
+
+  
+</nav>
+
+
+
+ </div>
+    </header>
+
+    <main id="main" class="main">
+      <div class="main-inner">
+        <div class="content-wrap">
+          <div id="content" class="content">
+            
+
+  <div id="posts" class="posts-expand">
+    
+
+  
+
+  
+  
+  
+
+  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
+  
+  
+  
+  <div class="post-block">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/11/AFNetworking-learn/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+
+    
+      <header class="post-header">
+
+        
+        
+          <h1 class="post-title" itemprop="name headline">AFNetworking学习</h1>
+        
+
+        <div class="post-meta">
+          <span class="post-time">
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-calendar-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">发表于</span>
+              
+              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-11T10:40:12+08:00">
+                2021-05-11
+              </time>
+            
+
+            
+
+            
+          </span>
+
+          
+            <span class="post-category" >
+            
+              <span class="post-meta-divider">|</span>
+            
+              <span class="post-meta-item-icon">
+                <i class="fa fa-folder-o"></i>
+              </span>
+              
+                <span class="post-meta-item-text">分类于</span>
+              
+              
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
+                    <span itemprop="name">开发技术</span>
+                  </a>
+                </span>
+
+                
+                
+              
+            </span>
+          
+
+          
+            
+              <span class="post-comments-count">
+                <span class="post-meta-divider">|</span>
+                <span class="post-meta-item-icon">
+                  <i class="fa fa-comment-o"></i>
+                </span>
+                <a href="/2021/05/11/AFNetworking-learn/#comments" itemprop="discussionUrl">
+                  <span class="post-comments-count valine-comment-count" data-xid="/2021/05/11/AFNetworking-learn/" itemprop="commentCount"></span>
+                </a>
+              </span>
+            
+          
+
+          
+          
+
+          
+            <span class="post-meta-divider">|</span>
+            <span class="page-pv">阅读数
+            <span class="busuanzi-value" id="busuanzi_value_page_pv" ></span>
+            </span>
+          
+
+          
+
+          
+
+        </div>
+      </header>
+    
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+      
+
+      
+        <h2 id="AFURLSessionManager"><a href="#AFURLSessionManager" class="headerlink" title="AFURLSessionManager"></a>AFURLSessionManager</h2><p>发起请求的核心类。通过 <code>AFURLSessionManager</code> 来创建并定制一个request。</p>
+<h3 id="主要的成员类"><a href="#主要的成员类" class="headerlink" title="主要的成员类"></a>主要的成员类</h3><p>一个Manager里持有着一些负责具体功能的类。</p>
+<ul>
+<li>NSURLSession</li>
+<li>NSOperationQueue</li>
+<li>AFURLResponseSerialization</li>
+<li>AFSecurityPolicy</li>
+<li>AFNetworkReachabilityManager</li>
+<li>存储不同类型的Session Task的容器，比如<code>tasks</code>, <code>dataTasks</code>, <code>uploadTasks</code>, <code>downloadTasks</code></li>
+</ul>
+<h3 id="NSURLSession"><a href="#NSURLSession" class="headerlink" title="NSURLSession"></a>NSURLSession</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSURLSession</span> *session;</span><br></pre></td></tr></table></figure>
+
+
+<p>苹果目前主要的类。新版AF是基于<code>NSURLSession</code>重新实现的。一个<code>manager</code>持有着一个<code>NSURLSession</code>的实例</p>
+<h3 id="NSOperationQueue"><a href="#NSOperationQueue" class="headerlink" title="NSOperationQueue"></a>NSOperationQueue</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">readonly</span>, <span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSOperationQueue</span> *operationQueue;</span><br></pre></td></tr></table></figure>
+
+
+<p>创建代码</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br><span class="line">3</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">self</span>.operationQueue = [[<span class="built_in">NSOperationQueue</span> alloc] init];</span><br><span class="line"><span class="keyword">self</span>.operationQueue.maxConcurrentOperationCount = <span class="number">1</span>;</span><br><span class="line"><span class="keyword">self</span>.session = [<span class="built_in">NSURLSession</span> sessionWithConfiguration:<span class="keyword">self</span>.sessionConfiguration delegate:<span class="keyword">self</span> delegateQueue:<span class="keyword">self</span>.operationQueue];</span><br></pre></td></tr></table></figure>
+
+
+<p>session所有的请求调用delegate, 都是在这个<code>operationQueue</code>上，并通过设置并发数量为1，保证回调执行的次序</p>
+<h3 id="AFURLResponseSerialization"><a href="#AFURLResponseSerialization" class="headerlink" title="AFURLResponseSerialization"></a>AFURLResponseSerialization</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="keyword">id</span> &lt;AFURLResponseSerialization&gt; responseSerializer;</span><br></pre></td></tr></table></figure>
+
+
+<p>该协议定义了一个方法，负责将收到的HttpResponse转化为需要的对象。</p>
+<figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line">- (<span class="keyword">nullable</span> <span class="keyword">id</span>)responseObjectForResponse:(<span class="keyword">nullable</span> <span class="built_in">NSURLResponse</span> *)response data:(<span class="keyword">nullable</span> <span class="built_in">NSData</span> *)data error:(<span class="built_in">NSError</span> * _Nullable __autoreleasing *)error <span class="built_in">NS_SWIFT_NOTHROW</span>;</span><br></pre></td></tr></table></figure>
+
+
+<p>基于这个协议，<code>AF</code>里定制了多种不同的类型的<code>responseSerializer</code>，包括<code>AFHTTPResponseSerializer</code>, <code>AFJSONResponseSerializer</code>, <code>AFXMLParserResponseSerializer</code>, <code>AFXMLDocumentResponseSerializer</code>, <code>AFPropertyListResponseSerializer</code>, <code>AFImageResponseSerializer</code>, <code>AFCompoundResponseSerializer</code>。 其中<code>AFHTTPResponseSerializer</code> 是其他各种<code>responseSerializer</code>类的基类。</p>
+<h4 id="AFHTTPResponseSerializer"><a href="#AFHTTPResponseSerializer" class="headerlink" title="AFHTTPResponseSerializer"></a>AFHTTPResponseSerializer</h4><p>可以通过<code>acceptableStatusCodes</code>和<code>acceptableContentTypes</code>来对处理的<code>Response</code>进行检查，如果<code>statusCode</code>和<code>MIME type</code>符合两个两个成员变量里定义的类型，就可以正常处理，否则返回处理类型不匹配的Error。 处理的方式是将Response中的Data直接返回，不做加工。<br><code>acceptableContentTypes</code>默认为nil, 而<code>acceptableStatusCodes</code>默认为<code>200-299</code></p>
+<h4 id="AFJSONResponseSerializer"><a href="#AFJSONResponseSerializer" class="headerlink" title="AFJSONResponseSerializer"></a>AFJSONResponseSerializer</h4><p>该类继承自<code>AFHTTPResponseSerializer</code>，因此也会根据<code>statuscode</code>和<code>MIME type</code>来对可以处理的<code>Response</code>进行检查。可以处理的<code>MIME type</code>默认为<code>application/json</code>, <code>text/json</code>, <code>text/javascript</code>。如果可以处理，就会将受到的Data转化为一个json对象。可以通过<code>readingOptions</code>成员变量来设置转化时的<code>option</code>。</p>
+<h4 id="AFXMLParserResponseSerializer"><a href="#AFXMLParserResponseSerializer" class="headerlink" title="AFXMLParserResponseSerializer"></a>AFXMLParserResponseSerializer</h4><p>该类同样继承自<code>AFHTTPResponseSerializer</code>，可以处理的<code>MIME type</code>默认为<code>application/xml</code>, <code>text/xml</code>。返回的是一个<code>NSXMLParser</code>对象</p>
+<h4 id="AFXMLDocumentResponseSerializer"><a href="#AFXMLDocumentResponseSerializer" class="headerlink" title="AFXMLDocumentResponseSerializer"></a>AFXMLDocumentResponseSerializer</h4><p>可以处理的<code>MIME type</code>默认为<code>application/xml</code>, <code>text/xml</code>。返回一个<code>NSXMLDocument</code>对象</p>
+<h4 id="AFPropertyListResponseSerializer"><a href="#AFPropertyListResponseSerializer" class="headerlink" title="AFPropertyListResponseSerializer"></a>AFPropertyListResponseSerializer</h4><p>可以处理的<code>MIME type</code>默认为<code>application/x-plist</code>。返回一个<code>NSPropertyListSerialization</code>对象</p>
+<h4 id="AFImageResponseSerializer"><a href="#AFImageResponseSerializer" class="headerlink" title="AFImageResponseSerializer"></a>AFImageResponseSerializer</h4><p>可以处理的<code>MIME type</code>默认为 <code>image/tiff</code>, <code>image/jpeg</code>, <code>image/gif</code>, <code>image/png</code>, <code>image/ico</code>, <code>image/x-icon</code>, <code>image/bmp</code>, <code>image/x-bmp</code>, <code>image/x-xbitmap</code>, <code>image/x-win-bitmap</code>。注意这个类可以通过设置<code>automaticallyInflatesResponseImage</code>来允许在后台线程中就将收到的Data进行解压缩（下载的网络图片一般是jpg,png等压缩格式），变成位图数据。这样在UI线程中使用图片数据时就可以直接用，从而提高UI线程渲染效率。</p>
+<h4 id="AFCompoundResponseSerializer"><a href="#AFCompoundResponseSerializer" class="headerlink" title="AFCompoundResponseSerializer"></a>AFCompoundResponseSerializer</h4><p>复合型<code>ResponseSerializer</code>, 支持通过Array类型的<code>responseSerializers</code>来设置一系列<code>ResponseSerializer</code>实例。收到Response时遍历该Array，哪个能处理就用那个。</p>
+<h3 id="AFSecurityPolicy"><a href="#AFSecurityPolicy" class="headerlink" title="AFSecurityPolicy"></a>AFSecurityPolicy</h3><p>这个类主要是在收到<code>didReceiveChallenge</code>回调时， 配合处理证书有关的逻辑使用。没有细研究</p>
+<h3 id="AFNetworkReachabilityManager"><a href="#AFNetworkReachabilityManager" class="headerlink" title="AFNetworkReachabilityManager"></a>AFNetworkReachabilityManager</h3><p>负责监听网络连接状态的类。使用的是系统库里的模块<code>SCNetworkReachability</code>。通过这个类让<code>manager</code>也可以进行网络状态监测</p>
+<h3 id="mutableTaskDelegatesKeyedByTaskIdentifier成员变量。"><a href="#mutableTaskDelegatesKeyedByTaskIdentifier成员变量。" class="headerlink" title="mutableTaskDelegatesKeyedByTaskIdentifier成员变量。"></a><code>mutableTaskDelegatesKeyedByTaskIdentifier</code>成员变量。</h3><p>一个<code>NSMutableDictionary</code>类型的成员变量，manager为每个创建的task，对应生成一个<code>AFURLSessionManagerTaskDelegate</code>类。这个字典存储每个delegate类。key为<code>task.taskIdentifier</code>， value为<code>delegate</code>类。 当<code>manager</code>收到delegate回调时，先根据<code>task.taskIdentifier</code>从这个字典中查询到对应的<code>AFURLSessionManagerTaskDelegate</code>实例,然后再将收到的调用转发到这个实例中进行具体处理,并在适当时机，调用使用者传入的block回调, 以及发送相应的Notification。</p>
+<h2 id="AFURLSessionManagerTaskDelegate"><a href="#AFURLSessionManagerTaskDelegate" class="headerlink" title="AFURLSessionManagerTaskDelegate"></a>AFURLSessionManagerTaskDelegate</h2><p>响应每个task的回调，处理process, 以及根据ResponseSerializer来解析数据。</p>
+<h3 id="manager"><a href="#manager" class="headerlink" title="manager"></a>manager</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">weak</span>) AFURLSessionManager *manager;</span><br></pre></td></tr></table></figure>
+
+
+<p>weak类型，对创建task的manager的弱引用。需要通过manager来访问<code>ResponseSerializer</code>等。</p>
+<h3 id="mutableData"><a href="#mutableData" class="headerlink" title="mutableData"></a>mutableData</h3><figure class="highlight objectivec"><table><tr><td class="gutter"><pre><span class="line">1</span><br></pre></td><td class="code"><pre><span class="line"><span class="keyword">@property</span> (<span class="keyword">nonatomic</span>, <span class="keyword">strong</span>) <span class="built_in">NSMutableData</span> *mutableData;</span><br></pre></td></tr></table></figure>
+
+
+<p>存储收到的数据</p>
+<h2 id="AFHttpSessionManager"><a href="#AFHttpSessionManager" class="headerlink" title="AFHttpSessionManager"></a>AFHttpSessionManager</h2><p>继承于<code>AFURLSessionManager</code>，封装一系列的GET，POST等常用http请求方法。包含一个<code>AFHTTPRequestSerializer</code>的成员实例</p>
+<h3 id="AFHTTPRequestSerializer"><a href="#AFHTTPRequestSerializer" class="headerlink" title="AFHTTPRequestSerializer"></a>AFHTTPRequestSerializer</h3><p>该类以及他的子类，负责对常用的请求设置及参数进行辅助组装，产生一个Request。比如query参数拼接，urlencode, http header fields, authorization information,<br>超时时间，缓存设置等。</p>
+<h2 id="UIKit-AFNetworking"><a href="#UIKit-AFNetworking" class="headerlink" title="UIKit+AFNetworking"></a>UIKit+AFNetworking</h2><p>在AFNetWorking功能基础上，对UIKit进行扩展</p>
+<h2 id="调用时序图"><a href="#调用时序图" class="headerlink" title="调用时序图"></a>调用时序图</h2><h3 id="发起一个请求"><a href="#发起一个请求" class="headerlink" title="发起一个请求"></a>发起一个请求</h3><p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/AFGETCreateRequest.png#id=GFak4&originHeight=464&originWidth=904&originalType=binary&status=done&style=none" alt=""></p>
+<h3 id="通过Delegate类处理一个请求"><a href="#通过Delegate类处理一个请求" class="headerlink" title="通过Delegate类处理一个请求"></a>通过Delegate类处理一个请求</h3><p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/AFGETDelegate.png#id=Yk5bB&originHeight=617&originWidth=932&originalType=binary&status=done&style=none" alt=""></p>
+
+      
+    </div>
+    
+    
+    
+
+    
+
+    
+
+    
+
+    <footer class="post-footer">
+      
+        <div class="post-tags">
+          
+            <a href="/tags/%E6%8A%80%E6%9C%AF%E5%8E%9F%E7%90%86/" rel="tag"># 技术原理</a>
+          
+        </div>
+      
+
+      
+      
+      
+
+      
+        <div class="post-nav">
+          <div class="post-nav-next post-nav-item">
+            
+              <a href="/2020/09/27/Jenkins-pipe-using-tips-md/" rel="next" title="Jenkins中pipe使用总结">
+                <i class="fa fa-chevron-left"></i> Jenkins中pipe使用总结
+              </a>
+            
+          </div>
+
+          <span class="post-nav-divider"></span>
+
+          <div class="post-nav-prev post-nav-item">
+            
+          </div>
+        </div>
+      
+
+      
+      
+    </footer>
+  </div>
+  
+  
+  
+  </article>
+
+
+
+    <div class="post-spread">
+      
+    </div>
+  </div>
+
+
+          </div>
+          
+
+
+          
+
+  
+    <div class="comments" id="comments">
+    </div>
+  
+
+
+
+        </div>
+        
+          
+  
+  <div class="sidebar-toggle">
+    <div class="sidebar-toggle-line-wrap">
+      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
+      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
+    </div>
+  </div>
+
+  <aside id="sidebar" class="sidebar">
+    
+    <div class="sidebar-inner">
+
+      
+
+      
+        <ul class="sidebar-nav motion-element">
+          <li class="sidebar-nav-toc sidebar-nav-active" data-target="post-toc-wrap">
+            文章目录
+          </li>
+          <li class="sidebar-nav-overview" data-target="site-overview-wrap">
+            站点概览
+          </li>
+        </ul>
+      
+
+      <section class="site-overview-wrap sidebar-panel">
+        <div class="site-overview">
+          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+            
+              <img class="site-author-image" itemprop="image"
+                src="/images/avatar.jpeg"
+                alt="Kevinlma" />
+            
+              <p class="site-author-name" itemprop="name">Kevinlma</p>
+              <p class="site-description motion-element" itemprop="description"></p>
+          </div>
+
+          <nav class="site-state motion-element">
+
+            
+              <div class="site-state-item site-state-posts">
+              
+                <a href="/archives/">
+              
+                  <span class="site-state-item-count">8</span>
+                  <span class="site-state-item-name">日志</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-categories">
+                <a href="/categories/index.html">
+                  <span class="site-state-item-count">2</span>
+                  <span class="site-state-item-name">分类</span>
+                </a>
+              </div>
+            
+
+            
+              
+              
+              <div class="site-state-item site-state-tags">
+                <a href="/tags/index.html">
+                  <span class="site-state-item-count">5</span>
+                  <span class="site-state-item-name">标签</span>
+                </a>
+              </div>
+            
+
+          </nav>
+
+          
+
+          
+
+          
+          
+
+          
+          
+
+          
+
+        </div>
+      </section>
+
+      
+      <!--noindex-->
+        <section class="post-toc-wrap motion-element sidebar-panel sidebar-panel-active">
+          <div class="post-toc">
+
+            
+              
+            
+
+            
+              <div class="post-toc-content"><ol class="nav"><li class="nav-item nav-level-2"><a class="nav-link" href="#AFURLSessionManager"><span class="nav-number">1.</span> <span class="nav-text">AFURLSessionManager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#主要的成员类"><span class="nav-number">1.1.</span> <span class="nav-text">主要的成员类</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSURLSession"><span class="nav-number">1.2.</span> <span class="nav-text">NSURLSession</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#NSOperationQueue"><span class="nav-number">1.3.</span> <span class="nav-text">NSOperationQueue</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AFURLResponseSerialization"><span class="nav-number">1.4.</span> <span class="nav-text">AFURLResponseSerialization</span></a><ol class="nav-child"><li class="nav-item nav-level-4"><a class="nav-link" href="#AFHTTPResponseSerializer"><span class="nav-number">1.4.1.</span> <span class="nav-text">AFHTTPResponseSerializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFJSONResponseSerializer"><span class="nav-number">1.4.2.</span> <span class="nav-text">AFJSONResponseSerializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFXMLParserResponseSerializer"><span class="nav-number">1.4.3.</span> <span class="nav-text">AFXMLParserResponseSerializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFXMLDocumentResponseSerializer"><span class="nav-number">1.4.4.</span> <span class="nav-text">AFXMLDocumentResponseSerializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFPropertyListResponseSerializer"><span class="nav-number">1.4.5.</span> <span class="nav-text">AFPropertyListResponseSerializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFImageResponseSerializer"><span class="nav-number">1.4.6.</span> <span class="nav-text">AFImageResponseSerializer</span></a></li><li class="nav-item nav-level-4"><a class="nav-link" href="#AFCompoundResponseSerializer"><span class="nav-number">1.4.7.</span> <span class="nav-text">AFCompoundResponseSerializer</span></a></li></ol></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AFSecurityPolicy"><span class="nav-number">1.5.</span> <span class="nav-text">AFSecurityPolicy</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#AFNetworkReachabilityManager"><span class="nav-number">1.6.</span> <span class="nav-text">AFNetworkReachabilityManager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mutableTaskDelegatesKeyedByTaskIdentifier成员变量。"><span class="nav-number">1.7.</span> <span class="nav-text">mutableTaskDelegatesKeyedByTaskIdentifier成员变量。</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AFURLSessionManagerTaskDelegate"><span class="nav-number">2.</span> <span class="nav-text">AFURLSessionManagerTaskDelegate</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#manager"><span class="nav-number">2.1.</span> <span class="nav-text">manager</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#mutableData"><span class="nav-number">2.2.</span> <span class="nav-text">mutableData</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#AFHttpSessionManager"><span class="nav-number">3.</span> <span class="nav-text">AFHttpSessionManager</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#AFHTTPRequestSerializer"><span class="nav-number">3.1.</span> <span class="nav-text">AFHTTPRequestSerializer</span></a></li></ol></li><li class="nav-item nav-level-2"><a class="nav-link" href="#UIKit-AFNetworking"><span class="nav-number">4.</span> <span class="nav-text">UIKit+AFNetworking</span></a></li><li class="nav-item nav-level-2"><a class="nav-link" href="#调用时序图"><span class="nav-number">5.</span> <span class="nav-text">调用时序图</span></a><ol class="nav-child"><li class="nav-item nav-level-3"><a class="nav-link" href="#发起一个请求"><span class="nav-number">5.1.</span> <span class="nav-text">发起一个请求</span></a></li><li class="nav-item nav-level-3"><a class="nav-link" href="#通过Delegate类处理一个请求"><span class="nav-number">5.2.</span> <span class="nav-text">通过Delegate类处理一个请求</span></a></li></ol></li></ol></div>
+            
+
+          </div>
+        </section>
+      <!--/noindex-->
+      
+
+      
+
+    </div>
+  </aside>
+
+
+        
+      </div>
+    </main>
+
+    <footer id="footer" class="footer">
+      <div class="footer-inner">
+        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-user"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
+
+  
+</div>
+
+
+  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
+
+
+
+  <span class="post-meta-divider">|</span>
+
+
+
+  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
+
+
+
+
+        
+<div class="busuanzi-count">
+  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+
+  
+    <span class="site-uv">
+      访客数
+      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
+      人
+    </span>
+  
+
+  
+    <span class="site-pv">
+      总访问量
+      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
+      次
+    </span>
+  
+</div>
+
+
+
+
+
+
+
+
+        
+      </div>
+    </footer>
+
+    
+      <div class="back-to-top">
+        <i class="fa fa-arrow-up"></i>
+        
+      </div>
+    
+
+    
+
+  </div>
+
+  
+
+<script type="text/javascript">
+  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
+    window.Promise = null;
+  }
+</script>
+
+
+
+
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
+  
+
+  
+  
+    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
+  
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
+
+  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
+
+
+
+  
+  
+
+  
+  <script type="text/javascript" src="/js/src/scrollspy.js?v=5.1.4"></script>
+<script type="text/javascript" src="/js/src/post-details.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
+
+
+
+  
+
+
+  
+
+
+
+
+	
+
+
+
+
+
+  
+
+
+
+
+
+  
+
+
+
+
+
+
+
+
+
+
+  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
+  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
+  
+  <script type="text/javascript">
+    var GUEST = ['nick','mail','link'];
+    var guest = 'nick,mail';
+    guest = guest.split(',').filter(item=>{
+      return GUEST.indexOf(item)>-1;
+    });
+    new Valine({
+        el: '#comments' ,
+        verify: false,
+        notify: false,
+        appId: 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
+        appKey: 'Pfz8y5QNzgWpslPcrKe12GjA',
+        placeholder: '请在此输入您的留言',
+        avatar:'mm',
+        guest_info:guest,
+        pageSize:'10' || 10,
+    });
+  </script>
+
+
+
+  
+
+
+
+
+
+  
+
+  
+
+  
+
+  
+  
+
+  
+
+  
+
+  
+
+</body>
+</html>
