@@ -1,124 +1,45 @@
 <!DOCTYPE html>
-
-
-
-  
-
-
-<html class="theme-next mist use-motion" lang="zh-Hans">
+<html lang="zh-CN">
 <head>
-  <meta charset="UTF-8"/>
-<meta http-equiv="X-UA-Compatible" content="IE=edge" />
-<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=1"/>
+  <meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1, maximum-scale=2">
 <meta name="theme-color" content="#222">
-<meta name="google-site-verification" content="qSgLYpPb2QZejzl75yENa3JN0YSGDE4o8PolHoKnhQE" />
+<meta name="generator" content="Hexo 4.2.1">
+  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png">
+  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png">
+  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png">
+  <link rel="mask-icon" href="/images/logo.svg" color="#222">
+
+<link rel="stylesheet" href="/css/main.css">
 
 
+<link rel="stylesheet" href="/lib/font-awesome/css/all.min.css">
 
+<script id="hexo-configurations">
+    var NexT = window.NexT || {};
+    var CONFIG = {"hostname":"yoursite.com","root":"/","scheme":"Gemini","version":"7.8.0","exturl":false,"sidebar":{"position":"left","display":"post","padding":18,"offset":12,"onmobile":false},"copycode":{"enable":false,"show_result":false,"style":null},"back2top":{"enable":true,"sidebar":false,"scrollpercent":false},"bookmark":{"enable":false,"color":"#222","save":"auto"},"fancybox":false,"mediumzoom":false,"lazyload":false,"pangu":false,"comments":{"style":"tabs","active":null,"storage":true,"lazyload":false,"nav":null},"algolia":{"hits":{"per_page":10},"labels":{"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}},"localsearch":{"enable":false,"trigger":"auto","top_n_per_article":1,"unescape":false,"preload":false},"motion":{"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}}};
+  </script>
 
-
-
-
-
-<meta http-equiv="Cache-Control" content="no-transform" />
-<meta http-equiv="Cache-Control" content="no-siteapp" />
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-  
-  
-  <link href="/lib/fancybox/source/jquery.fancybox.css?v=2.1.5" rel="stylesheet" type="text/css" />
-
-
-
-
-
-
-
-<link href="/lib/font-awesome/css/font-awesome.min.css?v=4.6.2" rel="stylesheet" type="text/css" />
-
-<link href="/css/main.css?v=5.1.4" rel="stylesheet" type="text/css" />
-
-
-  <link rel="apple-touch-icon" sizes="180x180" href="/images/apple-touch-icon-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="32x32" href="/images/favicon-32x32-next.png?v=5.1.4">
-
-
-  <link rel="icon" type="image/png" sizes="16x16" href="/images/favicon-16x16-next.png?v=5.1.4">
-
-
-  <link rel="mask-icon" href="/images/logo.svg?v=5.1.4" color="#222">
-
-
-
-
-
-  <meta name="keywords" content="Hexo, NexT" />
-
-
-
-
-
-
-
-
-
-
-<meta property="og:type" content="website">
+  <meta property="og:type" content="website">
 <meta property="og:title" content="Kevinlma的博客">
 <meta property="og:url" content="http://yoursite.com/index.html">
 <meta property="og:site_name" content="Kevinlma的博客">
+<meta property="og:locale" content="zh_CN">
 <meta property="article:author" content="Kevinlma">
 <meta name="twitter:card" content="summary">
 
+<link rel="canonical" href="http://yoursite.com/">
 
 
-<script type="text/javascript" id="hexo.configurations">
-  var NexT = window.NexT || {};
-  var CONFIG = {
-    root: '/',
-    scheme: 'Mist',
-    version: '5.1.4',
-    sidebar: {"position":"left","display":"post","offset":12,"b2t":false,"scrollpercent":false,"onmobile":false},
-    fancybox: true,
-    tabs: true,
-    motion: {"enable":true,"async":false,"transition":{"post_block":"fadeIn","post_header":"slideDownIn","post_body":"slideDownIn","coll_header":"slideLeftIn","sidebar":"slideUpIn"}},
-    duoshuo: {
-      userId: '0',
-      author: '博主'
-    },
-    algolia: {
-      applicationID: '',
-      apiKey: '',
-      indexName: '',
-      hits: {"per_page":10},
-      labels: {"input_placeholder":"Search for Posts","hits_empty":"We didn't find any results for the search: ${query}","hits_stats":"${hits} results found in ${time} ms"}
-    }
+<script id="page-configurations">
+  // https://hexo.io/docs/variables.html
+  CONFIG.page = {
+    sidebar: "",
+    isHome : true,
+    isPost : false,
+    lang   : 'zh-CN'
   };
 </script>
-
-
-
-  <link rel="canonical" href="http://yoursite.com/"/>
-
-
-
-
 
   <title>Kevinlma的博客</title>
   
@@ -128,217 +49,163 @@
 
 
 
+  <noscript>
+  <style>
+  .use-motion .brand,
+  .use-motion .menu-item,
+  .sidebar-inner,
+  .use-motion .post-block,
+  .use-motion .pagination,
+  .use-motion .comments,
+  .use-motion .post-header,
+  .use-motion .post-body,
+  .use-motion .collection-header { opacity: initial; }
 
+  .use-motion .site-title,
+  .use-motion .site-subtitle {
+    opacity: initial;
+    top: initial;
+  }
 
-<meta name="generator" content="Hexo 4.2.1"></head>
+  .use-motion .logo-line-before i { left: initial; }
+  .use-motion .logo-line-after i { right: initial; }
+  </style>
+</noscript>
 
-<body itemscope itemtype="http://schema.org/WebPage" lang="zh-Hans">
+</head>
 
-  
-  
-    
-  
-
-  <div class="container sidebar-position-left 
-  page-home">
+<body itemscope itemtype="http://schema.org/WebPage">
+  <div class="container use-motion">
     <div class="headband"></div>
 
-    <header id="header" class="header" itemscope itemtype="http://schema.org/WPHeader">
-      <div class="header-inner"><div class="site-brand-wrapper">
-  <div class="site-meta ">
-    
-
-    <div class="custom-logo-site-title">
-      <a href="/"  class="brand" rel="start">
-        <span class="logo-line-before"><i></i></span>
-        <span class="site-title">Kevinlma的博客</span>
-        <span class="logo-line-after"><i></i></span>
-      </a>
+    <header class="header" itemscope itemtype="http://schema.org/WPHeader">
+      <div class="header-inner"><div class="site-brand-container">
+  <div class="site-nav-toggle">
+    <div class="toggle" aria-label="切换导航栏">
+      <span class="toggle-line toggle-line-first"></span>
+      <span class="toggle-line toggle-line-middle"></span>
+      <span class="toggle-line toggle-line-last"></span>
     </div>
-      
-        <p class="site-subtitle">物来顺应，未来不迎，当时不杂，既过不恋</p>
-      
   </div>
 
-  <div class="site-nav-toggle">
-    <button>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-      <span class="btn-bar"></span>
-    </button>
+  <div class="site-meta">
+
+    <a href="/" class="brand" rel="start">
+      <span class="logo-line-before"><i></i></span>
+      <h1 class="site-title">Kevinlma的博客</h1>
+      <span class="logo-line-after"><i></i></span>
+    </a>
+      <p class="site-subtitle" itemprop="description">物来顺应，未来不迎，当时不杂，既过不恋</p>
+  </div>
+
+  <div class="site-nav-right">
+    <div class="toggle popup-trigger">
+    </div>
   </div>
 </div>
 
+
+
+
 <nav class="site-nav">
-  
-
-  
-    <ul id="menu" class="menu">
-      
-        
+  <ul id="menu" class="main-menu menu">
         <li class="menu-item menu-item-home">
-          <a href="/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-home"></i> <br />
-            
-            首页
-          </a>
-        </li>
-      
-        
+
+    <a href="/" rel="section"><i class="fa fa-home fa-fw"></i>首页</a>
+
+  </li>
         <li class="menu-item menu-item-tags">
-          <a href="/tags/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-tags"></i> <br />
-            
-            标签
-          </a>
-        </li>
-      
-        
+
+    <a href="/tags/" rel="section"><i class="fa fa-tags fa-fw"></i>标签</a>
+
+  </li>
         <li class="menu-item menu-item-categories">
-          <a href="/categories/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-th"></i> <br />
-            
-            分类
-          </a>
-        </li>
-      
-        
+
+    <a href="/categories/" rel="section"><i class="fa fa-th fa-fw"></i>分类</a>
+
+  </li>
         <li class="menu-item menu-item-archives">
-          <a href="/archives/" rel="section">
-            
-              <i class="menu-item-icon fa fa-fw fa-archive"></i> <br />
-            
-            归档
-          </a>
-        </li>
-      
 
-      
-    </ul>
-  
+    <a href="/archives/" rel="section"><i class="fa fa-archive fa-fw"></i>归档</a>
 
-  
+  </li>
+  </ul>
 </nav>
 
 
 
- </div>
+
+</div>
     </header>
 
-    <main id="main" class="main">
+    
+  <div class="back-to-top">
+    <i class="fa fa-arrow-up"></i>
+    <span>0%</span>
+  </div>
+
+
+    <main class="main">
       <div class="main-inner">
         <div class="content-wrap">
-          <div id="content" class="content">
+          
+
+          <div class="content index posts-expand">
             
-  <section id="posts" class="posts-expand">
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/" itemprop="url">《心理抚养》读后感</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/" class="post-title-link" itemprop="url">《心理抚养》读后感</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-09T09:55:25+08:00">
-                2021-08-09
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">读书笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2021-08-09 09:55:25 / 修改时间：09:59:20" itemprop="dateCreated datePublished" datetime="2021-08-09T09:55:25+08:00">2021-08-09</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/" class="post-meta-item leancloud_visitors" data-flag-title="《心理抚养》读后感" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -346,160 +213,94 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          作者简介作者李玫瑾，中国人民公安大学犯罪心理学教授。从事犯罪心理学、未成年犯罪等研究，目前在中国人民公安大学任教。
-总的收获概括
-很多人成年后的问题，都与早期的抚养息息相关，这是有规律的。
-早期的抚养，0-3岁建立情感依赖，3-6岁培养初期性格， 小学毕业之前都是培养心理依恋的阶段，以6岁之前尤为重
-          ...
+          <h2 id="作者简介"><a href="#作者简介" class="headerlink" title="作者简介"></a>作者简介</h2><p>作者李玫瑾，中国人民公安大学犯罪心理学教授。从事犯罪心理学、未成年犯罪等研究，目前在中国人民公安大学任教。</p>
+<h2 id="总的收获概括"><a href="#总的收获概括" class="headerlink" title="总的收获概括"></a>总的收获概括</h2><ol>
+<li>很多人成年后的问题，都与早期的抚养息息相关，这是有规律的。</li>
+<li>早期的抚养，0-3岁建立情感依赖，3-6岁培养初期性格， 小学毕业之前都是培养心理依恋的阶段，以6岁之前尤为重要。</li>
+<li>早期最好父母自己带，或者尽可能的陪伴孩子，有稳定的抚养过程，从而建立起深厚的心理依恋，这是教育孩子的心理资本。没有这个资本，孩子，尤其是青春期过后的孩子，单纯的管教很难起作用，<br>他基本不听你的。不但不听，很多时候反而起反作用，造成关系决裂甚至反目成仇。</li>
+<li>性格培养、规则观念等需要在3岁后就尽早有意识培养。青春期时再教就晚了。挫折教育、社会性教育、怎样与他人相处。</li>
+<li>不要太担心批评或者惩罚会有不良影响，一定程度上可以培养孩子心理耐受性，防止说不得现象。只是主要要恩威并施、鼓励关爱为主，注意分寸。</li>
+<li>多带着运动。多受一些身体的苦，对培养心理的强大有积极作用。对减少抑郁、释放不良情绪等都有好处。</li>
+<li>孩子的问题要改，多半都是大人的问题，看看大人哪里需要改。</li>
+<li>青春期管孩子，方法需要变。不要多话，点到为止。</li>
+</ol>
+<p>所以有时觉的在目前自己所处的行业，选择了相对轻松的公司，尽可能的每天能多陪孩子，而没有去寻求996，拿高薪，还是值得的。想想如果每天虽然都能回家，但孩子基本每天都见不到你，那跟不在又有什么区别呢，又谈何建立起深厚的心理依恋资本呢？</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2021/08/09/%E5%BF%83%E7%90%86%E6%8A%9A%E5%85%BB/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/08/04/symbol-conflict-between-two-library-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/08/04/symbol-conflict-between-two-library-md/" itemprop="url">两个第三方库符号冲突问题解决</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/08/04/symbol-conflict-between-two-library-md/" class="post-title-link" itemprop="url">两个第三方库符号冲突问题解决</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-08-04T15:16:52+08:00">
-                2021-08-04
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2021-08-04 15:16:52 / 修改时间：15:17:57" itemprop="dateCreated datePublished" datetime="2021-08-04T15:16:52+08:00">2021-08-04</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/08/04/symbol-conflict-between-two-library-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/08/04/symbol-conflict-between-two-library-md/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2021/08/04/symbol-conflict-between-two-library-md/" class="post-meta-item leancloud_visitors" data-flag-title="两个第三方库符号冲突问题解决" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -507,158 +308,86 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          操作步骤静态库一般是Fat library， 先查看静态库都包含哪些CPU架构。
-12&gt;&gt; lipo -info libSGTTSLib.aArchitectures in the fat file: libSGTTSLib.a are: i386 armv7 armv7s x86_64
-          ...
+          <h2 id="操作步骤"><a href="#操作步骤" class="headerlink" title="操作步骤"></a>操作步骤</h2><p>静态库一般是Fat library， 先查看静态库都包含哪些CPU架构。</p>
+<figure class="highlight bash"><table><tr><td class="gutter"><pre><span class="line">1</span><br><span class="line">2</span><br></pre></td><td class="code"><pre><span class="line">&gt;&gt; lipo -info libSGTTSLib.a</span><br><span class="line">Architectures <span class="keyword">in</span> the fat file: libSGTTSLib.a are: i386 armv7 armv7s x86_64 arm64</span><br></pre></td></tr></table></figure>
+<p>模拟机是x86_64、真机现在用的是arm64和armv7</p>
+<p>先拆分出每个架构对应的lib，以arm64为例：</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/08/04/symbol-conflict-between-two-library-md/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2021/08/04/symbol-conflict-between-two-library-md/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/" itemprop="url">ObjC中的Block机制学习</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/" class="post-title-link" itemprop="url">ObjC中的Block机制学习</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-11T12:09:32+08:00">
-                2021-05-11
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2021-05-11 12:09:32 / 修改时间：12:10:17" itemprop="dateCreated datePublished" datetime="2021-05-11T12:09:32+08:00">2021-05-11</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/" class="post-meta-item leancloud_visitors" data-flag-title="ObjC中的Block机制学习" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -666,159 +395,93 @@
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          项目中有时会碰到与block有关的疑难问题，要解决的话对block的原理需要有一个较清晰的认识。虽然网上介绍很多，不过还是自己尝试分析一次记忆更深刻一些。
-block类型
-非arc工程中，block分为三种，stack、heap和global。stack的block在生命周期结束时就会释放(花括号)
-          ...
+          <p>项目中有时会碰到与block有关的疑难问题，要解决的话对block的原理需要有一个较清晰的认识。虽然网上介绍很多，不过还是自己尝试分析一次记忆更深刻一些。</p>
+<h3 id="block类型"><a href="#block类型" class="headerlink" title="block类型"></a>block类型</h3><ul>
+<li>非arc工程中，block分为三种，stack、heap和global。<br>stack的block在生命周期结束时就会释放(花括号)<br>heap的只有当引用计数为0时才会被释放</li>
+<li>arc的工程中，stack的block会自动转化为heap。</li>
+<li>block是一个伪对象，针对stack的block， 对其进行retain，release没有效果。所以在非arc工程中，要讲block作为参数外传，赋值时，必须调用copy</li>
+<li>在arc下，只有block赋值给了一个strong类型，或者是作为参数向外传，都会自动变为堆类型block</li>
+</ul>
+<h3 id="Block的类型"><a href="#Block的类型" class="headerlink" title="Block的类型"></a>Block的类型</h3><ul>
+<li>在 ARC 中，捕获外部了变量的 block 的类会是 <code>__NSMallocBlock__</code> 或者 <code>__NSStackBlock__</code>，如果 block 被赋值给了某个变量在这个过程中会执行 <code>_Block_copy</code> 将原有的 <code>__NSStackBlock__</code> 变成 <code>__NSMallocBlock__</code>；但是如果 block 没有被赋值给某个变量，那它的类型就是 <code>__NSStackBlock__</code>；没有捕获外部变量的 block 的类会是 <code>__NSGlobalBlock__</code> 即不在堆上，也不在栈上，它类似 C 语言函数一样会在代码段中。</li>
+<li>在非 ARC 中，捕获了外部变量的 block 的类会是 <code>__NSStackBlock__</code>，放置在栈上，没有捕获外部变量的 block 时与 ARC 环境下情况相同</li>
+</ul>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2021/05/11/ObjC%E4%B8%AD%E7%9A%84Block%E6%9C%BA%E5%88%B6%E5%AD%A6%E4%B9%A0/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2021/05/11/AFNetworking-learn/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2021/05/11/AFNetworking-learn/" itemprop="url">AFNetworking学习</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2021/05/11/AFNetworking-learn/" class="post-title-link" itemprop="url">AFNetworking学习</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2021-05-11T10:40:12+08:00">
-                2021-05-11
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2021-05-11 10:40:12 / 修改时间：10:45:05" itemprop="dateCreated datePublished" datetime="2021-05-11T10:40:12+08:00">2021-05-11</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2021/05/11/AFNetworking-learn/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2021/05/11/AFNetworking-learn/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2021/05/11/AFNetworking-learn/" class="post-meta-item leancloud_visitors" data-flag-title="AFNetworking学习" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -826,162 +489,92 @@ block类型
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          AFURLSessionManager发起请求的核心类。通过 AFURLSessionManager 来创建并定制一个request。
-主要的成员类一个Manager里持有着一些负责具体功能的类。
-
-NSURLSession
-NSOperationQueue
-AFURLResponseSeriali
-          ...
+          <h2 id="AFURLSessionManager"><a href="#AFURLSessionManager" class="headerlink" title="AFURLSessionManager"></a>AFURLSessionManager</h2><p>发起请求的核心类。通过 <code>AFURLSessionManager</code> 来创建并定制一个request。</p>
+<h3 id="主要的成员类"><a href="#主要的成员类" class="headerlink" title="主要的成员类"></a>主要的成员类</h3><p>一个Manager里持有着一些负责具体功能的类。</p>
+<ul>
+<li>NSURLSession</li>
+<li>NSOperationQueue</li>
+<li>AFURLResponseSerialization</li>
+<li>AFSecurityPolicy</li>
+<li>AFNetworkReachabilityManager</li>
+<li>存储不同类型的Session Task的容器，比如<code>tasks</code>, <code>dataTasks</code>, <code>uploadTasks</code>, <code>downloadTasks</code></li>
+</ul>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2021/05/11/AFNetworking-learn/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2021/05/11/AFNetworking-learn/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/09/27/Jenkins-pipe-using-tips-md/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/09/27/Jenkins-pipe-using-tips-md/" itemprop="url">Jenkins中pipe使用总结</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/09/27/Jenkins-pipe-using-tips-md/" class="post-title-link" itemprop="url">Jenkins中pipe使用总结</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-09-27T14:27:47+08:00">
-                2020-09-27
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-09-27 14:27:47 / 修改时间：13:03:42" itemprop="dateCreated datePublished" datetime="2020-09-27T14:27:47+08:00">2020-09-27</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/09/27/Jenkins-pipe-using-tips-md/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/09/27/Jenkins-pipe-using-tips-md/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2020/09/27/Jenkins-pipe-using-tips-md/" class="post-meta-item leancloud_visitors" data-flag-title="Jenkins中pipe使用总结" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -989,157 +582,96 @@ AFURLResponseSeriali
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          使用pipe的背景项目中的测试包以及发布包的构建是通过Jenkins来进行的，使用的是自由风格的任务，但主要的构建任务是写在一系列的python脚本里的。比如一个Release的构建任务，基本就是设置好git的仓库地址，账号密码，然后在构建的一栏里选择执行shell, 然后填上一句类似python 
-          ...
+          <h2 id="使用pipe的背景"><a href="#使用pipe的背景" class="headerlink" title="使用pipe的背景"></a>使用pipe的背景</h2><p>项目中的测试包以及发布包的构建是通过Jenkins来进行的，使用的是自由风格的任务，但主要的构建任务是写在一系列的python脚本里的。比如一个Release的构建任务，基本就是设置好git的仓库地址，账号密码，然后在构建的一栏里选择<code>执行shell</code>, 然后填上一句类似<code>python /.../build.py -type adhoc</code>这样的语句就行。其中build.py是从项目初期的一些自动化构建脚本整合而来的，涉及的内容包括<code>增加build号</code>, <code>构建ipa</code>, <code>上传测试包</code>, <code>上传符号</code>, <code>发邮件</code>等一系列操作。</p>
+<p>这种方式虽然使用起来很简单，但是也逐渐暴露出一些弊病，比如</p>
+<ol>
+<li>涉及到的所有步骤都是包含在build.py及其子调用里。如果想只进行其中某一个步骤，或者构建失败后，想从中间某个步骤接着重新够建，这是做不到的。必须重头再构建一遍。</li>
+<li>构建错误不好排查，只能从整体的构建日志里去查，看看是哪一步出错了。</li>
+<li>Jenkins界面上也不太友好。一个构建步骤开始后，基本只能等着结果或者出错，或者成功。无法从界面上直观的看出进行到什么阶段，以及花费了多长时间</li>
+</ol>
+<p>所以基于上面的问题，就对构建方式进行了改造，同时熟悉了一次Jenkins的pipe机制</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/09/27/Jenkins-pipe-using-tips-md/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2020/09/27/Jenkins-pipe-using-tips-md/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/" itemprop="url">iOS程序证书和签名机制Tips</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/" class="post-title-link" itemprop="url">iOS程序证书和签名机制Tips</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-08-03T19:29:47+08:00">
-                2020-08-03
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-08-03 19:29:47" itemprop="dateCreated datePublished" datetime="2020-08-03T19:29:47+08:00">2020-08-03</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-08-11 14:07:34" itemprop="dateModified" datetime="2020-08-11T14:07:34+08:00">2020-08-11</time>
               </span>
-            
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/" class="post-meta-item leancloud_visitors" data-flag-title="iOS程序证书和签名机制Tips" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -1147,164 +679,87 @@ AFURLResponseSeriali
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          基本概念涉及的算法
-非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。
-摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 根据哈希值无法反推出数据是什么 。
-
-签名算法：发送方：
-
-把原始数据计算hash
-将ha
-          ...
+          <h2 id="基本概念"><a href="#基本概念" class="headerlink" title="基本概念"></a>基本概念</h2><h4 id="涉及的算法"><a href="#涉及的算法" class="headerlink" title="涉及的算法"></a>涉及的算法</h4><ol>
+<li>非对称加密算法，一般是RSA加密算法。一对私钥和公钥。用私钥加密后，只能用公钥解密。知道公钥无法破解出私钥。</li>
+<li>摘要算法，也是哈希算法。相同的数据，哈希值肯定相同。哈希值不同，数据肯定不同。 <code>根据哈希值无法反推出数据是什么</code> 。</li>
+</ol>
+<h4 id="签名算法："><a href="#签名算法：" class="headerlink" title="签名算法："></a>签名算法：</h4><p>发送方：</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2020/08/03/iOS%E7%A8%8B%E5%BA%8F%E8%AF%81%E4%B9%A6%E5%92%8C%E7%AD%BE%E5%90%8D%E6%9C%BA%E5%88%B6Tips/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/" itemprop="url">一步步通过flutter_boost来集成Flutter到iOS项目</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/" class="post-title-link" itemprop="url">一步步通过flutter_boost来集成Flutter到iOS项目</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-31T10:30:19+08:00">
-                2020-07-31
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-07-31 10:30:19 / 修改时间：11:59:53" itemprop="dateCreated datePublished" datetime="2020-07-31T10:30:19+08:00">2020-07-31</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/" class="post-meta-item leancloud_visitors" data-flag-title="一步步通过flutter_boost来集成Flutter到iOS项目" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -1312,157 +767,90 @@ AFURLResponseSeriali
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          简单集成flutter到已有项目创建Flutter Moduleflutter的集成可以是创建一个 新的flutter app 的方式，也可以是以创建一个module的方式，集成到一个已有的App中。一般项目都会通过第二种方式，来逐步进行Native和Flutter代码的混编。这里也主要是采用第二种
-          ...
+          <h3 id><a href="#" class="headerlink" title></a></h3><h2 id="简单集成flutter到已有项目"><a href="#简单集成flutter到已有项目" class="headerlink" title="简单集成flutter到已有项目"></a>简单集成flutter到已有项目</h2><h3 id="创建Flutter-Module"><a href="#创建Flutter-Module" class="headerlink" title="创建Flutter Module"></a>创建Flutter Module</h3><p>flutter的集成可以是创建一个 新的<code>flutter app</code> 的方式，也可以是以创建一个module的方式，集成到一个已有的App中。一般项目都会通过第二种方式，来逐步进行Native和Flutter代码的混编。这里也主要是采用第二种方式，来一步步演示集成步骤。</p>
+<p>这种集成方式要求flutter侧的代码是通过module的方式来创建，所以先创建一个示例的module。运行下面创建代码</p>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2020/07/31/integrate_flutter_into_exist_app_with_flutterboost_step_by_step/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/22/remove_the_wall_in_your_thinking/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/22/remove_the_wall_in_your_thinking/" itemprop="url">《拆掉思维里的墙》</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/22/remove_the_wall_in_your_thinking/" class="post-title-link" itemprop="url">《拆掉思维里的墙》</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-22T22:47:02+08:00">
-                2020-07-22
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index">
-                    <span itemprop="name">读书笔记</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-07-22 22:47:02" itemprop="dateCreated datePublished" datetime="2020-07-22T22:47:02+08:00">2020-07-22</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2020/07/22/remove_the_wall_in_your_thinking/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/22/remove_the_wall_in_your_thinking/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-24 13:06:56" itemprop="dateModified" datetime="2020-07-24T13:06:56+08:00">2020-07-24</time>
               </span>
-            
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E8%AF%BB%E4%B9%A6%E7%AC%94%E8%AE%B0/" itemprop="url" rel="index"><span itemprop="name">读书笔记</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2020/07/22/remove_the_wall_in_your_thinking/" class="post-meta-item leancloud_visitors" data-flag-title="《拆掉思维里的墙》" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -1470,159 +858,88 @@ AFURLResponseSeriali
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          关于书和作者作者古典，原新东方的老师，之后从事心理咨询，后又从事职业发展咨询事业。这本书之前看过，但是没什么印象，但是几年之后再看一遍时，却感觉受益良多。好书还是应该多看几遍，不同的生活阶段会有不同的收获。
-一些总结关于安全感
-很多打着为你好的旗帜，对你所做的行为，其实都是因为他们自身缺乏安全感。比
-          ...
+          <h2 id="关于书和作者"><a href="#关于书和作者" class="headerlink" title="关于书和作者"></a>关于书和作者</h2><p>作者古典，原新东方的老师，之后从事心理咨询，后又从事职业发展咨询事业。这本书之前看过，但是没什么印象，但是几年之后再看一遍时，却感觉受益良多。好书还是应该多看几遍，不同的生活阶段会有不同的收获。</p>
+<h2 id="一些总结"><a href="#一些总结" class="headerlink" title="一些总结"></a>一些总结</h2><h4 id="关于安全感"><a href="#关于安全感" class="headerlink" title="关于安全感"></a>关于安全感</h4><ol>
+<li>很多打着为你好的旗帜，对你所做的行为，其实都是因为他们自身缺乏安全感。比如爱情中的<code>我离不开你</code>，这些不是爱，而是恐惧。<strong>这个世界没有谁离不开谁</strong>。</li>
+<li>人们有时会错把依赖当成爱。爱不是死死抓住，而是要放开。</li>
+<li>安全感别人给不了你，只能自己给自己。很多人在爱情中说对方给自己给不了安全感，但其实依靠别人给予的安全感，永远不会是安全的。</li>
+</ol>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/22/remove_the_wall_in_your_thinking/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2020/07/22/remove_the_wall_in_your_thinking/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/" itemprop="url">Time Profiler使用Tips</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/" class="post-title-link" itemprop="url">Time Profiler使用Tips</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
+              <span class="post-meta-item-text">发表于</span>
               
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-10T19:29:47+08:00">
-                2020-07-10
-              </time>
-            
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-07-10 19:29:47 / 修改时间：19:35:04" itemprop="dateCreated datePublished" datetime="2020-07-10T19:29:47+08:00">2020-07-10</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
-                <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
-                </span>
-                <a href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/" itemprop="commentCount"></span>
-                </a>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
               </span>
-            
-          
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/" class="post-meta-item leancloud_visitors" data-flag-title="Time Profiler使用Tips" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -1630,160 +947,92 @@ AFURLResponseSeriali
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          原理按照固定的时间间隔，定时对线程中的调用堆栈进行采样，获取一个sample. 之后统计在这一时段内，某个方法出现在sample中次数。以此来表示该函数的运行情况
-
-所以Long Running和Repeatitive and Fast running. 他们很可能被采样同样多的次数。
-面板概念We
-          ...
+          <h2 id="原理"><a href="#原理" class="headerlink" title="原理"></a>原理</h2><p>按照固定的时间间隔，定时对线程中的调用堆栈进行采样，获取一个sample. 之后统计在这一时段内，某个方法出现在sample中次数。以此来表示该函数的运行情况</p>
+<p><img src="https://raw.githubusercontent.com/chiyun1/blog_image/master/img/20200710193248.png" alt></p>
+<p>所以<code>Long Running</code>和<code>Repeatitive and Fast running</code>. 他们很可能被采样同样多的次数。</p>
+<h2 id="面板概念"><a href="#面板概念" class="headerlink" title="面板概念"></a>面板概念</h2>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2020/07/10/Time-Profiler%E4%BD%BF%E7%94%A8Tips/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
       
-
-  
-
   
   
-  
-
-  <article class="post post-type-normal" itemscope itemtype="http://schema.org/Article">
-  
-  
-  
-  <div class="post-block">
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/01/wwdc-optimizing-app-startup-time/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
       <meta itemprop="name" content="Kevinlma">
       <meta itemprop="description" content="">
-      <meta itemprop="image" content="/images/avatar.jpeg">
     </span>
 
     <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
       <meta itemprop="name" content="Kevinlma的博客">
     </span>
-
-    
       <header class="post-header">
-
-        
-        
-          <h1 class="post-title" itemprop="name headline">
-                
-                <a class="post-title-link" href="/2020/07/01/wwdc-optimizing-app-startup-time/" itemprop="url">wwdc optimizing_app_startup_time的记录</a></h1>
-        
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/01/wwdc-optimizing-app-startup-time/" class="post-title-link" itemprop="url">wwdc optimizing_app_startup_time的记录</a>
+        </h2>
 
         <div class="post-meta">
-          <span class="post-time">
-            
+            <span class="post-meta-item">
               <span class="post-meta-item-icon">
-                <i class="fa fa-calendar-o"></i>
+                <i class="far fa-calendar"></i>
               </span>
-              
-                <span class="post-meta-item-text">发表于</span>
-              
-              <time title="创建于" itemprop="dateCreated datePublished" datetime="2020-07-01T20:03:22+08:00">
-                2020-07-01
-              </time>
-            
+              <span class="post-meta-item-text">发表于</span>
 
-            
-
-            
-          </span>
-
-          
-            <span class="post-category" >
-            
-              <span class="post-meta-divider">|</span>
-            
-              <span class="post-meta-item-icon">
-                <i class="fa fa-folder-o"></i>
-              </span>
-              
-                <span class="post-meta-item-text">分类于</span>
-              
-              
-                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
-                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index">
-                    <span itemprop="name">开发技术</span>
-                  </a>
-                </span>
-
-                
-                
-              
+              <time title="创建时间：2020-07-01 20:03:22" itemprop="dateCreated datePublished" datetime="2020-07-01T20:03:22+08:00">2020-07-01</time>
             </span>
-          
-
-          
-            
-              <span class="post-comments-count">
-                <span class="post-meta-divider">|</span>
+              <span class="post-meta-item">
                 <span class="post-meta-item-icon">
-                  <i class="fa fa-comment-o"></i>
+                  <i class="far fa-calendar-check"></i>
                 </span>
-                <a href="/2020/07/01/wwdc-optimizing-app-startup-time/#comments" itemprop="discussionUrl">
-                  <span class="post-comments-count valine-comment-count" data-xid="/2020/07/01/wwdc-optimizing-app-startup-time/" itemprop="commentCount"></span>
-                </a>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-02 10:37:31" itemprop="dateModified" datetime="2020-07-02T10:37:31+08:00">2020-07-02</time>
               </span>
-            
-          
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
 
           
-          
-
-          
-
-          
-
-          
+            <span id="/2020/07/01/wwdc-optimizing-app-startup-time/" class="post-meta-item leancloud_visitors" data-flag-title="wwdc optimizing_app_startup_time的记录" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
 
         </div>
       </header>
-    
 
     
     
@@ -1791,65 +1040,43 @@ AFURLResponseSeriali
     <div class="post-body" itemprop="articleBody">
 
       
-      
-
-      
-        
-          
-          App build step
-预处理，将宏替换，生成ASCIi中间文件
-运行编译器，将中间文件生成汇编中间文件
-运行汇编器，将汇编文件翻译生成目标文件 .o
-运行链接器，将目标文件组合成一个可执行文件
-
-Mach-O TerminologyFile Types:
-Executable – Main 
-          ...
+          <h2 id="App-build-step"><a href="#App-build-step" class="headerlink" title="App build step"></a>App build step</h2><ol>
+<li>预处理，将宏替换，生成ASCIi中间文件</li>
+<li>运行编译器，将中间文件生成汇编中间文件</li>
+<li>运行汇编器，将汇编文件翻译生成目标文件 .o</li>
+<li>运行链接器，将目标文件组合成一个可执行文件</li>
+</ol>
+<h2 id="Mach-O-Terminology"><a href="#Mach-O-Terminology" class="headerlink" title="Mach-O Terminology"></a>Mach-O Terminology</h2><h4 id="File-Types"><a href="#File-Types" class="headerlink" title="File Types:"></a>File Types:</h4><ul>
+<li>Executable – Main binary for application</li>
+<li>Dylib – Dynamic library (.dylib, .dll, .so)</li>
+<li>bundle – Dylib that cannot be linked, only <code>dlopen()</code>, e.g. plug-ins</li>
+</ul>
           <!--noindex-->
-          <div class="post-button text-center">
-            <a class="btn" href="/2020/07/01/wwdc-optimizing-app-startup-time/#more" rel="contents">
-              阅读全文 &raquo;
-            </a>
-          </div>
+            <div class="post-button">
+              <a class="btn" href="/2020/07/01/wwdc-optimizing-app-startup-time/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
           <!--/noindex-->
         
       
     </div>
-    
-    
-    
 
     
-
     
-
     
-
-    <footer class="post-footer">
-      
-
-      
-
-      
-
-      
-      
+      <footer class="post-footer">
         <div class="post-eof"></div>
-      
-    </footer>
-  </div>
-  
-  
-  
+      </footer>
   </article>
+  
+  
+  
 
-
-    
-  </section>
 
   
   <nav class="pagination">
-    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/">&lt;i class&#x3D;&quot;fa fa-angle-right&quot;&gt;&lt;&#x2F;i&gt;</a>
+    <span class="page-number current">1</span><a class="page-number" href="/page/2/">2</a><a class="extend next" rel="next" href="/page/2/"><i class="fa fa-angle-right" aria-label="下一页"></i></a>
   </nav>
 
 
@@ -1857,185 +1084,162 @@ Executable – Main
           </div>
           
 
-
-          
-
-        </div>
-        
-          
-  
-  <div class="sidebar-toggle">
-    <div class="sidebar-toggle-line-wrap">
-      <span class="sidebar-toggle-line sidebar-toggle-line-first"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-middle"></span>
-      <span class="sidebar-toggle-line sidebar-toggle-line-last"></span>
-    </div>
-  </div>
-
-  <aside id="sidebar" class="sidebar">
-    
-    <div class="sidebar-inner">
-
-      
-
-      
-
-      <section class="site-overview-wrap sidebar-panel sidebar-panel-active">
-        <div class="site-overview">
-          <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
-            
-              <img class="site-author-image" itemprop="image"
-                src="/images/avatar.jpeg"
-                alt="Kevinlma" />
-            
-              <p class="site-author-name" itemprop="name">Kevinlma</p>
-              <p class="site-description motion-element" itemprop="description"></p>
-          </div>
-
-          <nav class="site-state motion-element">
-
-            
-              <div class="site-state-item site-state-posts">
-              
-                <a href="/archives/">
-              
-                  <span class="site-state-item-count">11</span>
-                  <span class="site-state-item-name">日志</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-categories">
-                <a href="/categories/index.html">
-                  <span class="site-state-item-count">2</span>
-                  <span class="site-state-item-name">分类</span>
-                </a>
-              </div>
-            
-
-            
-              
-              
-              <div class="site-state-item site-state-tags">
-                <a href="/tags/index.html">
-                  <span class="site-state-item-count">5</span>
-                  <span class="site-state-item-name">标签</span>
-                </a>
-              </div>
-            
-
-          </nav>
-
-          
-
-          
-
-          
-          
-
-          
-          
-
-          
-
-        </div>
-      </section>
-
-      
-
-      
-
-    </div>
-  </aside>
-
-
-        
-      </div>
-    </main>
-
-    <footer id="footer" class="footer">
-      <div class="footer-inner">
-        <div class="copyright">&copy; <span itemprop="copyrightYear">2021</span>
-  <span class="with-love">
-    <i class="fa fa-user"></i>
-  </span>
-  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
-
-  
-</div>
-
-
-  <div class="powered-by">由 <a class="theme-link" target="_blank" href="https://hexo.io">Hexo</a> 强力驱动</div>
-
-
-
-  <span class="post-meta-divider">|</span>
-
-
-
-  <div class="theme-info">主题 &mdash; <a class="theme-link" target="_blank" href="https://github.com/iissnan/hexo-theme-next">NexT.Mist</a> v5.1.4</div>
-
-
-
-
-        
-<div class="busuanzi-count">
-  <script async src="//busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
-
-  
-    <span class="site-uv">
-      访客数
-      <span class="busuanzi-value" id="busuanzi_value_site_uv"></span>
-      人
-    </span>
-  
-
-  
-    <span class="site-pv">
-      总访问量
-      <span class="busuanzi-value" id="busuanzi_value_site_pv"></span>
-      次
-    </span>
-  
-</div>
-
-
-
-
-
-
-
-
-        
-      </div>
-    </footer>
-
-    
-      <div class="back-to-top">
-        <i class="fa fa-arrow-up"></i>
-        
-      </div>
-    
-
-    
-
-  </div>
-
-  
-
-<script type="text/javascript">
-  if (Object.prototype.toString.call(window.Promise) !== '[object Function]') {
-    window.Promise = null;
+<script>
+  window.addEventListener('tabs:register', () => {
+    let { activeClass } = CONFIG.comments;
+    if (CONFIG.comments.storage) {
+      activeClass = localStorage.getItem('comments_active') || activeClass;
+    }
+    if (activeClass) {
+      let activeTab = document.querySelector(`a[href="#comment-${activeClass}"]`);
+      if (activeTab) {
+        activeTab.click();
+      }
+    }
+  });
+  if (CONFIG.comments.storage) {
+    window.addEventListener('tabs:click', event => {
+      if (!event.target.matches('.tabs-comment .tab-content .tab-pane')) return;
+      let commentClass = event.target.classList[1];
+      localStorage.setItem('comments_active', commentClass);
+    });
   }
 </script>
 
+        </div>
+          
+  
+  <div class="toggle sidebar-toggle">
+    <span class="toggle-line toggle-line-first"></span>
+    <span class="toggle-line toggle-line-middle"></span>
+    <span class="toggle-line toggle-line-last"></span>
+  </div>
+
+  <aside class="sidebar">
+    <div class="sidebar-inner">
+
+      <ul class="sidebar-nav motion-element">
+        <li class="sidebar-nav-toc">
+          文章目录
+        </li>
+        <li class="sidebar-nav-overview">
+          站点概览
+        </li>
+      </ul>
+
+      <!--noindex-->
+      <div class="post-toc-wrap sidebar-panel">
+      </div>
+      <!--/noindex-->
+
+      <div class="site-overview-wrap sidebar-panel">
+        <div class="site-author motion-element" itemprop="author" itemscope itemtype="http://schema.org/Person">
+    <img class="site-author-image" itemprop="image" alt="Kevinlma"
+      src="/images/avatar.jpeg">
+  <p class="site-author-name" itemprop="name">Kevinlma</p>
+  <div class="site-description" itemprop="description"></div>
+</div>
+<div class="site-state-wrap motion-element">
+  <nav class="site-state">
+      <div class="site-state-item site-state-posts">
+          <a href="/archives/">
+        
+          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-name">日志</span>
+        </a>
+      </div>
+      <div class="site-state-item site-state-categories">
+            <a href="/categories/">
+          
+        <span class="site-state-item-count">2</span>
+        <span class="site-state-item-name">分类</span></a>
+      </div>
+      <div class="site-state-item site-state-tags">
+            <a href="/tags/">
+          
+        <span class="site-state-item-count">5</span>
+        <span class="site-state-item-name">标签</span></a>
+      </div>
+  </nav>
+</div>
+
+
+
+      </div>
+
+    </div>
+  </aside>
+  <div id="sidebar-dimmer"></div>
+
+
+      </div>
+    </main>
+
+    <footer class="footer">
+      <div class="footer-inner">
+        
+
+        
+
+<div class="copyright">
+  
+  &copy; 
+  <span itemprop="copyrightYear">2021</span>
+  <span class="with-love">
+    <i class="fa fa-heart"></i>
+  </span>
+  <span class="author" itemprop="copyrightHolder">Kevinlma</span>
+</div>
+  <div class="powered-by">由 <a href="https://hexo.io/" class="theme-link" rel="noopener" target="_blank">Hexo</a> & <a href="https://theme-next.org/" class="theme-link" rel="noopener" target="_blank">NexT.Gemini</a> 强力驱动
+  </div>
+
+        
+<div class="busuanzi-count">
+  <script async src="https://busuanzi.ibruce.info/busuanzi/2.3/busuanzi.pure.mini.js"></script>
+    <span class="post-meta-item" id="busuanzi_container_site_uv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-user"></i>
+      </span>
+      <span class="site-uv" title="总访客量">
+        <span id="busuanzi_value_site_uv"></span>
+      </span>
+    </span>
+    <span class="post-meta-divider">|</span>
+    <span class="post-meta-item" id="busuanzi_container_site_pv" style="display: none;">
+      <span class="post-meta-item-icon">
+        <i class="fa fa-eye"></i>
+      </span>
+      <span class="site-pv" title="总访问量">
+        <span id="busuanzi_value_site_pv"></span>
+      </span>
+    </span>
+</div>
 
 
 
 
+
+
+
+
+      </div>
+    </footer>
+  </div>
+
+  
+  <script src="/lib/anime.min.js"></script>
+  <script src="/lib/velocity/velocity.min.js"></script>
+  <script src="/lib/velocity/velocity.ui.min.js"></script>
+
+<script src="/js/utils.js"></script>
+
+<script src="/js/motion.js"></script>
+
+
+<script src="/js/schemes/pisces.js"></script>
+
+
+<script src="/js/next-boot.js"></script>
 
 
 
@@ -2053,133 +1257,41 @@ Executable – Main
 
 
 
-  
-  
-    <script type="text/javascript" src="/lib/jquery/index.js?v=2.1.3"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fastclick/lib/fastclick.min.js?v=1.0.6"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/jquery_lazyload/jquery.lazyload.js?v=1.9.7"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/velocity/velocity.ui.min.js?v=1.2.1"></script>
-  
-
-  
-  
-    <script type="text/javascript" src="/lib/fancybox/source/jquery.fancybox.pack.js?v=2.1.5"></script>
-  
 
 
-  
-
-
-  <script type="text/javascript" src="/js/src/utils.js?v=5.1.4"></script>
-
-  <script type="text/javascript" src="/js/src/motion.js?v=5.1.4"></script>
-
-
-
-  
-  
 
   
 
   
 
 
-  <script type="text/javascript" src="/js/src/bootstrap.js?v=5.1.4"></script>
-
-
-
-  
-
-
-  
-
-
-
-
-	
-
-
-
-
-
-  
-
-
-
-
-
-  
-
-
-
-
-
-
-
-
-
-
-  <script src="//cdn1.lncld.net/static/js/3.0.4/av-min.js"></script>
-  <script src="//unpkg.com/valine/dist/Valine.min.js"></script>
-  
-  <script type="text/javascript">
-    var GUEST = ['nick','mail','link'];
-    var guest = 'nick,mail';
-    guest = guest.split(',').filter(item=>{
-      return GUEST.indexOf(item)>-1;
+<script>
+NexT.utils.loadComments(document.querySelector('#valine-comments'), () => {
+  NexT.utils.getScript('//unpkg.com/valine/dist/Valine.min.js', () => {
+    var GUEST = ['nick', 'mail', 'link'];
+    var guest = 'nick,mail,';
+    guest = guest.split(',').filter(item => {
+      return GUEST.includes(item);
     });
     new Valine({
-        el: '#comments' ,
-        verify: false,
-        notify: false,
-        appId: 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
-        appKey: 'Pfz8y5QNzgWpslPcrKe12GjA',
-        placeholder: '请在此输入您的留言',
-        avatar:'mm',
-        guest_info:guest,
-        pageSize:'10' || 10,
+      el         : '#valine-comments',
+      verify     : false,
+      notify     : false,
+      appId      : 'hzRHT5ooKHOkksS2v7H4GMuk-gzGzoHsz',
+      appKey     : 'Pfz8y5QNzgWpslPcrKe12GjA',
+      placeholder: "说点什么",
+      avatar     : 'mm',
+      meta       : guest,
+      pageSize   : '10' || 10,
+      visitor    : true,
+      lang       : 'zh-cn' || 'zh-cn',
+      path       : location.pathname,
+      recordIP   : false,
+      serverURLs : ''
     });
-  </script>
-
-
-
-  
-
-
-
-
-
-  
-
-  
-
-  
-
-  
-  
-
-  
-
-  
-
-  
+  }, window.Valine);
+});
+</script>
 
 </body>
 </html>
