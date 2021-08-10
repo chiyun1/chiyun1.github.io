@@ -156,6 +156,106 @@
   
   
   <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
+    <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/07/01/wwdc-optimizing-app-startup-time/">
+
+    <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
+      <meta itemprop="image" content="/images/avatar.jpeg">
+      <meta itemprop="name" content="Kevinlma">
+      <meta itemprop="description" content="">
+    </span>
+
+    <span hidden itemprop="publisher" itemscope itemtype="http://schema.org/Organization">
+      <meta itemprop="name" content="Kevinlma的博客">
+    </span>
+      <header class="post-header">
+        <h2 class="post-title" itemprop="name headline">
+          
+            <a href="/2020/07/01/wwdc-optimizing-app-startup-time/" class="post-title-link" itemprop="url">wwdc optimizing_app_startup_time的记录</a>
+        </h2>
+
+        <div class="post-meta">
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-calendar"></i>
+              </span>
+              <span class="post-meta-item-text">发表于</span>
+
+              <time title="创建时间：2020-07-01 20:03:22" itemprop="dateCreated datePublished" datetime="2020-07-01T20:03:22+08:00">2020-07-01</time>
+            </span>
+              <span class="post-meta-item">
+                <span class="post-meta-item-icon">
+                  <i class="far fa-calendar-check"></i>
+                </span>
+                <span class="post-meta-item-text">更新于</span>
+                <time title="修改时间：2020-07-02 10:37:31" itemprop="dateModified" datetime="2020-07-02T10:37:31+08:00">2020-07-02</time>
+              </span>
+            <span class="post-meta-item">
+              <span class="post-meta-item-icon">
+                <i class="far fa-folder"></i>
+              </span>
+              <span class="post-meta-item-text">分类于</span>
+                <span itemprop="about" itemscope itemtype="http://schema.org/Thing">
+                  <a href="/categories/%E5%BC%80%E5%8F%91%E6%8A%80%E6%9C%AF/" itemprop="url" rel="index"><span itemprop="name">开发技术</span></a>
+                </span>
+            </span>
+
+          
+            <span id="/2020/07/01/wwdc-optimizing-app-startup-time/" class="post-meta-item leancloud_visitors" data-flag-title="wwdc optimizing_app_startup_time的记录" title="阅读次数">
+              <span class="post-meta-item-icon">
+                <i class="fa fa-eye"></i>
+              </span>
+              <span class="post-meta-item-text">阅读次数：</span>
+              <span class="leancloud-visitors-count"></span>
+            </span>
+  
+  
+
+        </div>
+      </header>
+
+    
+    
+    
+    <div class="post-body" itemprop="articleBody">
+
+      
+          <h2 id="App-build-step"><a href="#App-build-step" class="headerlink" title="App build step"></a>App build step</h2><ol>
+<li>预处理，将宏替换，生成ASCIi中间文件</li>
+<li>运行编译器，将中间文件生成汇编中间文件</li>
+<li>运行汇编器，将汇编文件翻译生成目标文件 .o</li>
+<li>运行链接器，将目标文件组合成一个可执行文件</li>
+</ol>
+<h2 id="Mach-O-Terminology"><a href="#Mach-O-Terminology" class="headerlink" title="Mach-O Terminology"></a>Mach-O Terminology</h2><h4 id="File-Types"><a href="#File-Types" class="headerlink" title="File Types:"></a>File Types:</h4><ul>
+<li>Executable – Main binary for application</li>
+<li>Dylib – Dynamic library (.dylib, .dll, .so)</li>
+<li>bundle – Dylib that cannot be linked, only <code>dlopen()</code>, e.g. plug-ins</li>
+</ul>
+          <!--noindex-->
+            <div class="post-button">
+              <a class="btn" href="/2020/07/01/wwdc-optimizing-app-startup-time/#more" rel="contents">
+                阅读全文 &raquo;
+              </a>
+            </div>
+          <!--/noindex-->
+        
+      
+    </div>
+
+    
+    
+    
+      <footer class="post-footer">
+        <div class="post-eof"></div>
+      </footer>
+  </article>
+  
+  
+  
+
+      
+  
+  
+  <article itemscope itemtype="http://schema.org/Article" class="post-block" lang="zh-CN">
     <link itemprop="mainEntityOfPage" href="http://yoursite.com/2020/06/30/openUDID%E8%80%97%E6%97%B6%E8%B0%83%E7%A0%94/">
 
     <span hidden itemprop="author" itemscope itemtype="http://schema.org/Person">
@@ -315,7 +415,7 @@
       <div class="site-state-item site-state-posts">
           <a href="/archives/">
         
-          <span class="site-state-item-count">11</span>
+          <span class="site-state-item-count">12</span>
           <span class="site-state-item-name">日志</span>
         </a>
       </div>
